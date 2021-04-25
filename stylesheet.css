@@ -294,6 +294,28 @@ h3{
 
 }
 
+.art-post-content h4{
+    color: white;
+    margin: 20px;
+    font-size: 14px;
+    font-family: Arial;
+    font-weight: bold;
+    text-decoration: none;
+}
+.art-post-content h5{
+    color: white;
+    margin: 26px;
+    font-size: 12px;
+    font-family: Arial;
+    font-weight: bold;
+    text-decoration: none;
+}
 footer{
     min-height: 33px;
+}
+
+.art-post-content td{
+    text-align: center;
+    border: dashed 1px;
+    padding: 2px;
 }

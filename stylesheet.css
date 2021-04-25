@@ -80,6 +80,7 @@ h1.art-logo-name
     margin: 0;
     color: #FFE852;
 
+
 }
 
 h1.art-logo-name a {
@@ -89,6 +90,7 @@ h1.art-logo-name a {
     padding: 0;
     margin: 0;
     color: #FFE852;
+    text-decoration: none;
 }
 
 h2.art-logo-text {
@@ -107,7 +109,8 @@ h2.art-logo-text
 }
 
 .content{
-    background-color: gray;
+    background-color: black;
+    overflow: hidden;
     position: relative;
     min-width: 25px;
     min-height: 25px;
@@ -175,3 +178,76 @@ ul.nav li:hover, .menu-item-active{
     margin: 0;
 }
 
+.art-post-body{
+    margin: 3px;
+    padding: 3px;
+    border-style: solid;
+    border-width: 2px;
+    background-color: #0a1811;
+}
+h2.art-post-header{
+
+    margin:5px;
+    font-size: 22px;
+    letter-spacing: -1px;
+    font-family: Arial;
+    font-style: normal;
+    color:white;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+h2.art-post-header img{
+    border: none;
+    margin-right: 5px;
+}
+
+h2.art-post-header a{
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 22px;
+    letter-spacing: -1px;
+    font-family: Arial;
+    font-style: normal;
+    color:white;
+    margin: 0;
+    padding: 0;
+}
+
+h2.art-post-header a:hover{
+    color: grey;
+}
+
+.art-post-header-meta{
+    padding: 1px;
+    color:white;
+    background: #103228;
+    font-family: Arial;
+    font-size: 10px;
+
+}
+
+.art-post-header-meta a{
+    color: #FFE852;
+}
+.art-post-content{
+    margin:12px;
+    padding: 0;
+    font-family: Tahoma;
+    font-size: 12px;
+    color: white;
+}
+.content-footer{
+   min-height: 33px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 11px;
+    color:white;
+    font-family: Arial;
+    text-align: center;
+}
+footer{
+    min-height: 33px;
+}

@@ -248,6 +248,52 @@ h2.art-post-header a:hover{
     font-family: Arial;
     text-align: center;
 }
+.art-content-lcolumn{
+
+    width: 25%;
+    padding-right: 5px;
+}
+h3{
+    font-family: Arial;
+    font-style: normal;
+    font-weight: bold;
+    color: white;
+    margin: 19px;
+    font-size: 18px;
+}
+.art-post-body ul{
+    margin: 1em 0 1em 2em;
+    padding: 0;
+    list-style-type: none;
+    font-family: Tahoma;
+    font-size: 12px;
+
+}
+.art-post-body li{
+    background-image: url("./images/crossbullet.png");
+    background-repeat: no-repeat;
+    padding-left: 13px;
+    overflow-y: hidden;
+}
+
+.art-post-body a{
+    text-decoration: none;
+    color: #FFE852;
+}
+.art-post-body a:hover{
+    text-decoration: underline;
+}
+
+.art-content-rcolumn{
+    height: 100%;
+}
+
+.art-columns{
+    display: flex;
+    flex-direction: row;
+
+}
+
 footer{
     min-height: 33px;
 }

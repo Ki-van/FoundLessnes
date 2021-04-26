@@ -374,3 +374,7 @@ form textarea{
     border-style: solid;
     border-color: red;
 }
+
+.QNA h4{
+    margin-left: 0;
+}

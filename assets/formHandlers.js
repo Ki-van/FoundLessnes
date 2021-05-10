@@ -28,7 +28,7 @@ form.addEventListener('submit', function (event) {
         theme.classList.remove("validation-error");
     }
 
-    if(!isValid(regPlanText, brief.tex))
+    if(!isValid(regPlanText, brief.text))
     {
         brief.classList.add("validation-error");
         res = false;
@@ -43,7 +43,8 @@ form.addEventListener('submit', function (event) {
     } else {
         email.classList.remove("validation-error");
     }
-
+    if(document.querySelector("form input[type='file']").dataTransfer.files.length === 0)
+        res = false;
     if(!res)
         event.preventDefault();
 });
@@ -51,3 +52,25 @@ form.addEventListener('submit', function (event) {
 function isValid(reg, text){
     return reg.test(text);
 }
+((D, B, log = (arg) => console.log(arg)) => {
+    const dropZone = D.querySelector("form");
+    const input = D.querySelector("form input[type='file']");
+    let file;
+
+    D.addEventListener("dragover", (ev) => ev.preventDefault());
+    D.addEventListener("drop", (ev) => ev.preventDefault());
+
+    dropZone.addEventListener("drop", (ev) => {
+        ev.preventDefault();
+
+        log(ev.dataTransfer);
+        if (
+            file.type !== "text/plain" ||
+            file.type !== "application/msword" ||
+            file.type !== "application/pdf"
+        )
+            return;
+        input.files = ev.dataTransfer.files;
+
+    });
+})(document);

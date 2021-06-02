@@ -1,12 +1,25 @@
+<?php
+    require_once __DIR__ . "/../vendor/autoload.php";
+    use app\core\Application;
+
+    $app = new Application();
+
+    $app->router->get('/', function(){
+        return "HELL yeah";
+    });
+
+    $app->run();
+?>
+<!--
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8"/>
     <meta name="description" content="Ход завязки всего на всем или культура детерменизма"/>
     <meta name="keywords" content="детерменизм безосновность философия">
-    <link href="stylesheet.css" rel="stylesheet" type="text/css">
+    <link href="../stylesheet.css" rel="stylesheet" type="text/css">
     <title>FoundLessness</title>
-    <link rel="shortcut icon" href="./images/cross.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="../images/cross.ico" type="image/x-icon">
 
 </head>
 <body>
@@ -19,7 +32,7 @@
         <div class="art-header-inner">
             <div class="art-headerobject"></div>
             <div class="art-logo">
-                <h1 id="name-text" class="art-logo-name"><a href="./index.html">Познания сфер интегральный хаос (ПСИХ)</a></h1>
+                <h1 id="name-text" class="art-logo-name"><a href="index.php">Познания сфер интегральный хаос (ПСИХ)</a></h1>
                 <h2 id="slogan-text" class="art-logo-text"><< Опоры и начала - лишь упрощения >></h2>
             </div>
         </div>
@@ -29,17 +42,17 @@
 <div class="content">
     <nav>
    <ul class="nav">
-       <li class="menu-item menu-item-active"><a href="./index.html">Главная</a></li>
+       <li class="menu-item menu-item-active"><a href="index.php">Главная</a></li>
        <li><span class="menu-separator"></span></li>
-       <li class="menu-item"><a href="./articles.html">Статьи</a></li>
+       <li class="menu-item"><a href="../articles.html">Статьи</a></li>
        <li><span class="menu-separator"></span></li>
        <li class="menu-item"><a href="#">Прогресс</a></li>
        <li><span class="menu-separator"></span></li>
-       <li class="menu-item"><a href="./Participation.html">Участие</a></li>
+       <li class="menu-item"><a href="../Participation.html">Участие</a></li>
        <li><span class="menu-separator"></span></li>
        <li class="menu-item">
            <div class="menu-dropdown">
-               <a href="./About.html">О ПСИХ</a>
+               <a href="../About.html">О ПСИХ</a>
                <div class="menu-dropdown-content">
                     <a>О мне</a>
                    <a>Public keys</a>
@@ -53,7 +66,7 @@
     </nav>
     <div class="art-post-body">
         <h2 class="art-post-header">
-            <img src="./images/cross.png" alt="CROSS" width="22" height="32">
+            <img src="../images/cross.png" alt="CROSS" width="22" height="32">
             <a href="#">
                 Математическое доказательство судьбы
             </a>
@@ -74,7 +87,7 @@
     </div>
     <div class="art-post-body">
         <h2 class="art-post-header">
-            <img src="./images/cross.png" alt="CROSS" width="22" height="32">
+            <img src="../images/cross.png" alt="CROSS" width="22" height="32">
             <a href="#">
             Основания математики
             </a>
@@ -95,7 +108,7 @@
     </div>
     <div class="art-post-body">
         <h2 class="art-post-header">
-            <img src="./images/cross.png" alt="CROSS" width="22" height="32">
+            <img src="../images/cross.png" alt="CROSS" width="22" height="32">
             <a href="#">
                 Философия математки
             </a>
@@ -116,8 +129,8 @@
     </div>
     <div class="art-post-body">
         <h2 class="art-post-header">
-            <img src="./images/cross.png" alt="CROSS" width="22" height="32">
-            <a href="#">
+            <img src="../images/cross.png" alt="CROSS" width="22" height="32">
+            <a href="../articles/psix_foundation.html">
                 Основания ПСИХ
             </a>
         </h2>
@@ -137,7 +150,7 @@
     </div>
     <div class="art-post-body">
         <h2 class="art-post-header">
-            <img src="./images/cross.png" alt="CROSS" width="22" height="32">
+            <img src="../images/cross.png" alt="CROSS" width="22" height="32">
             <a href="#">
                 Научный метод
             </a>
@@ -158,7 +171,7 @@
 
     <div class="art-post-body">
         <h2 class="art-post-header">
-            <img src="./images/cross.png" alt="CROSS" width="22" height="32">
+            <img src="../images/cross.png" alt="CROSS" width="22" height="32">
             <a href="#">
                 Метод философии
             </a>
@@ -184,7 +197,7 @@
 
     <div class="art-post-body">
         <h2 class="art-post-header">
-            <img src="./images/cross.png" alt="CROSS" width="22" height="32">
+            <img src="../images/cross.png" alt="CROSS" width="22" height="32">
             <a href="#">
                 Безосновность
             </a>
@@ -210,6 +223,6 @@
 <footer>
 
 </footer>
-<script src="./assets/eventHandlers.js"></script>
+<script src="../assets/eventHandlers.js"></script>
 </body>
-</html>
+</html>-->

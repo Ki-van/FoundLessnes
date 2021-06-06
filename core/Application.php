@@ -4,16 +4,23 @@ namespace app\core;
 
 class Application
 {
-    public Router $router;
-    public Request $request;
+    public static $ROOT_DIR;
+    public  $router;
+    public  $request;
+    public  $response;
+    public static $app;
 
-    public function __construct()
+    public function __construct($root_dir)
     {
+        self::$ROOT_DIR = $root_dir;
+        self::$app = $this;
+
         $this->request = new Request();
-        $this->router = new Router($this->request);
+        $this->response = new Response();
+        $this->router = new Router($this->request, $this->response);
     }
 
     public function run(){
-        $this->router->resolve();
+       echo $this->router->resolve();
     }
 }

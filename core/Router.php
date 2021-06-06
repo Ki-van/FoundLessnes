@@ -2,36 +2,80 @@
 
 namespace app\core;
 
+use Closure;
+
 class Router
 {
-    protected array $routes = [];
-    public Request $request;
+    public $request;
+    public $response;
+    protected $routes = [];
 
     /**
      * Router constructor.
      * @param Request $request
+     * @param Response $response
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, Response $response)
     {
+        $this->response = $response;
         $this->request = $request;
     }
 
 
-    public function get($path, $callback){
+    public function get($path, $callback)
+    {
         $this->routes['get'][$path] = $callback;
+    }
+
+    public function post(string $path,  $callback)
+    {
+        $this->routes['post'][$path] = $callback;
     }
 
     public function resolve()
     {
-       $path = $this->request->getPath();
-       $method = $this->request->getMethod();
-       $callback = $this->routes[$method][$path] ?? false;
+        $path = $this->request->getPath();
+        $method = $this->request->method();
+        $callback = $this->routes[$method][$path] ?? false;
 
-       if($callback === false) {
-           echo "Ты зашел далеко, 404 (";
-           exit;
-       }
+        if ($callback === false) {
+            $this->response->setStatusCode(404);
+            return $this->renderView("_404");
 
-       echo call_user_func($callback);
+        }
+        if (is_string($callback)) {
+            return $this->renderView($callback);
+        }
+        if(is_array($callback)){
+            $callback[0] = new $callback[0]();
+        }
+
+        return call_user_func($callback, $this->request);
     }
+
+    public function renderView(string $view, array $params = [])
+    {
+        $layoutContent = $this->layoutContent($params);
+        $viewContent = $this->renderOnlyView($view, $params);
+        return str_replace('{{content}}', $viewContent, $layoutContent);
+    }
+
+    protected function layoutContent(array $params)
+    {
+        foreach ($params as $key =>$value){
+            $$key = $value;
+        }
+        ob_start();
+        include_once Application::$ROOT_DIR . "/views/layouts/main.php";
+        return ob_get_clean();
+    }
+
+    protected function renderOnlyView($view, array $params)
+    {
+        ob_start();
+        include_once Application::$ROOT_DIR . "/views/$view.php";
+        return ob_get_clean();
+    }
+
+
 }

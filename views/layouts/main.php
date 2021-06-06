@@ -20,7 +20,7 @@
         <div class="art-header-inner">
             <div class="art-headerobject"></div>
             <div class="art-logo">
-                <h1 id="name-text" class="art-logo-name"><a href="">Познания сфер интегральный хаос (ПСИХ)</a></h1>
+                <h1 id="name-text" class="art-logo-name"><a href="/">Познания сфер интегральный хаос (ПСИХ)</a></h1>
                 <h2 id="slogan-text" class="art-logo-text"><< Опоры и начала - лишь упрощения >></h2>
             </div>
         </div>

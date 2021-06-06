@@ -6,9 +6,9 @@ use Closure;
 
 class Router
 {
-    public $request;
-    public $response;
-    protected $routes = [];
+    public Request $request;
+    public Response $response;
+    protected array $routes = [];
 
     /**
      * Router constructor.

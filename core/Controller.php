@@ -6,7 +6,7 @@ namespace app\core;
 
 class Controller
 {
-    public $layout = 'main';
+    public string $layout = 'main';
 
     /**
      * @param string $layout

@@ -9,6 +9,7 @@ class Application
     public  $request;
     public  $response;
     public static $app;
+    public $controller;
 
     public function __construct($root_dir)
     {

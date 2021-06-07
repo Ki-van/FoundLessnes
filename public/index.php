@@ -1,6 +1,7 @@
 <?php
     require_once __DIR__ . "/../vendor/autoload.php";
-
+    phpinfo();
+    exit;
 use app\controllers\AuthController;
 use app\controllers\SiteController;
 use app\core\Application;
@@ -20,7 +21,7 @@ use app\core\Application;
     $app->router->post('/login', [AuthController::class, 'login']);
 
     $app->router->get('/register', [AuthController::class, 'register']);
-    $app->router->get('/register', [AuthController::class, 'register']);
+    $app->router->post('/register', [AuthController::class, 'register']);
 
     $app->run();
 

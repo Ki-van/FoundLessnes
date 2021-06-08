@@ -15,6 +15,7 @@ class Field
     public Model $model;
     public string $attribute;
     public string $type;
+
     /**
      * Field constructor.
      * @param Model $model
@@ -44,13 +45,14 @@ class Field
             $this->type,
             $this->attribute,
             $this->model->{$this->attribute},
-            $this->model->hasError($this->attribute)? 'is-invalid': '',
+            $this->model->hasError($this->attribute) ? 'is-invalid' : '',
             $this->model->getFirstError($this->attribute)
         );
 
     }
 
-    public function passwordField(){
+    public function passwordField()
+    {
         $this->type = self::TYPE_PASSWORD;
         return $this;
     }

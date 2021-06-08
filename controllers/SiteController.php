@@ -29,4 +29,12 @@ class SiteController extends Controller
         exit;
         return "Handling for shure";
     }
+
+    public function _404() {
+        $params = [
+            'title' => 'Страница не найдена'
+        ];
+        return $this->render('_404', $params);
+    }
+
 }

@@ -358,9 +358,8 @@ footer{
 }
 
 
-.art-post-body form{
+form {
     font-family: Arial;
-
     position: relative;
     width: 30%;
     min-width: 50px;
@@ -371,20 +370,29 @@ footer{
     border-radius: 7px;
     background: radial-gradient(circle,black,#0a1811);
 }
+.form-group{
+    margin-top: 15px;
+}
 
-.form-label-text{
+form label{
     display: block;
     margin-bottom: 4px;
     margin-top: 4px;
     color: white;
     font-family: Arial;
     font-size: 12px;
-
 }
+
 form input{
     width: 100%;
     box-sizing: border-box;
+    margin-top: 5px;
 }
+form div .invalid-feedback {
+    color: #FFE852;
+    font-size: 10px;
+}
+
 form textarea{
     width: 100%;
     box-sizing: border-box;
@@ -412,7 +420,7 @@ form textarea{
     overflow: hidden;
 }
 
-.validation-error{
+.is-invalid{
     border-style: solid;
     border-color: red;
 }

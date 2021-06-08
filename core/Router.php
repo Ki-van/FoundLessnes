@@ -2,6 +2,7 @@
 
 namespace app\core;
 
+use app\controllers\SiteController;
 use Closure;
 
 class Router
@@ -38,9 +39,11 @@ class Router
         $method = $this->request->method();
         $callback = $this->routes[$method][$path] ?? false;
 
+        Application::$app->controller = new SiteController();
         if ($callback === false) {
             $this->response->setStatusCode(404);
-            return $this->renderView("_404");
+
+            return call_user_func([Application::$app->controller, '_404']);
 
         }
         if (is_string($callback)) {
@@ -75,6 +78,9 @@ class Router
 
     protected function renderOnlyView($view, array $params)
     {
+        foreach ($params as $key =>$value){
+            $$key = $value;
+        }
         ob_start();
         include_once Application::$ROOT_DIR . "/views/$view.php";
         return ob_get_clean();

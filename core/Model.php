@@ -11,6 +11,8 @@ abstract class Model
     public const RULE_MAX = 'max';
     public const RULE_MIN = 'min';
     public const RULE_MATCH = 'match';
+    public const RULE_UNIQUE = 'unique';
+
 
     public array $errors = [];
 
@@ -56,6 +58,18 @@ abstract class Model
                     $this->addError($attribute, self::RULE_MATCH, $rule);
                 }
 
+                if($ruleName === self::RULE_UNIQUE){
+                    $tableName = $rule['class']::tableName();
+                    $uniqueAttr = $rule['attribute'] ?? $attribute;
+                    $statement = Application::$app->db->pdo->prepare("SELECT * FROM $tableName WHERE $uniqueAttr = :attr");
+                    $statement->bindValue(':attr', $value);
+                    $statement->execute();
+                    $record = $statement->fetchObject();
+                    if($record){
+                        $this->addError($attribute, self::RULE_UNIQUE, ['field' =>$attribute]);
+                    }
+                }
+
             }
         }
 
@@ -80,7 +94,8 @@ abstract class Model
             self::RULE_MATCH => '* Это поле должно совпадать с полем {match}',
             self::RULE_MIN => '* Минимальный размер этого поля {min}',
             self::RULE_MAX => '* Максимальный размер этого поля {max}',
-            self::RULE_EMAIL => '* Email неправильный'
+            self::RULE_EMAIL => '* Email неправильный',
+            self::RULE_UNIQUE => 'Запись с таким {field} уже есть'
         ];
     }
 

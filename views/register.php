@@ -1,3 +1,7 @@
+<?php
+/** @var $model \app\models\User */
+?>
+
 <div class="art-post-body">
 
     <h2 class="art-post-header">

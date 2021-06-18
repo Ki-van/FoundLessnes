@@ -6,9 +6,25 @@ namespace app\core;
 
 abstract class DbModel extends Model
 {
-    abstract public function tableName(): string;
+    abstract static public function tableName(): string;
 
     abstract public function attributes(): array;
+
+    abstract static public function primaryKey(): string;
+
+    public static function findOne(array $where){
+        $tableName = static::tableName();
+        $attributes = array_keys($where);
+        $sql = implode('AND ', array_map(fn($attr)=>"$attr = :$attr", $attributes));
+        $statement = self::prepare("SELECT * FROM $tableName WHERE $sql");
+        foreach ($where as $key => $value) {
+            $statement->bindValue(":$key", $value);
+        }
+
+        $statement->execute();
+
+        return $statement->fetchObject(static::class);
+    }
 
     public function save(): bool
     {

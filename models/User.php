@@ -19,10 +19,13 @@ class User extends DbModel
     public string $password = '';
     public string $passwordConfirm = '';
 
+    public static function tableName(): string
+    {
+        return 'users';
+    }
 
     public function save(): bool
     {
-
         $this->password = password_hash($this->password, PASSWORD_DEFAULT);
         return parent::save();
     }
@@ -35,11 +38,6 @@ class User extends DbModel
             'password' => [self::RULE_REQUIRED, [self::RULE_MIN, 'min' => 6]],
             'passwordConfirm' => [self::RULE_REQUIRED, [self::RULE_MATCH, 'match' => 'password']]
         ];
-    }
-
-    public function tableName(): string
-    {
-        return 'users';
     }
 
     public function attributes(): array
@@ -55,6 +53,11 @@ class User extends DbModel
             'password' => 'Пароль',
             'passwordConfirm' => 'Подтвердите пароль'
         ];
+    }
+
+    public static function primaryKey(): string
+    {
+        return 'id';
     }
 
 

@@ -447,3 +447,13 @@ form textarea{
     font-size: 12px;
     color: white;
 }
+
+.alert{
+    text-align: center;
+}
+
+
+.alert-success{
+    background-color: lightgreen;
+    color: green;
+}

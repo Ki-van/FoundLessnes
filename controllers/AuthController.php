@@ -26,6 +26,7 @@ class AuthController extends Controller
             $user->loadData($request->getBody());
 
             if($user->validate() && $user->save()){
+                Application::$app->session->setFlash('success', 'Регистрация прошла успешно');
                 Application::$app->response->redirect('/');
             }
         }

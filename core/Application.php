@@ -36,6 +36,8 @@ class Application
         }
     }
 
+
+
     public function run()
     {
         echo $this->router->resolve();
@@ -56,4 +58,9 @@ class Application
         $this->user = null;
         $this->session->remove('user');
     }
+    public static function isGuest(): bool
+    {
+        return !self::$app->user;
+    }
+
 }

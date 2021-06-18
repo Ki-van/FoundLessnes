@@ -1,4 +1,5 @@
 <?php
+
 use app\core\Application;
 
 ?>
@@ -11,7 +12,7 @@ use app\core\Application;
     <meta name="keywords" content="детерменизм безосновность философия">
 
     <link href="/css/stylesheet.css" rel="stylesheet" type="text/css">
-    <title><?php echo $title?></title>
+    <title><?php echo $title ?></title>
     <link rel="shortcut icon" href="../images/cross.ico" type="image/x-icon">
 
 </head>
@@ -55,24 +56,35 @@ use app\core\Application;
                     </div>
                 </div>
             </li>
-            <li class="menu-item push"><a href="login">Login</a></li>
-            <li><span class="menu-separator"></span></li>
-            <li class="menu-item"><a href="register">Register</a></li>
-
+            <?php if (Application::isGuest()): ?>
+                <li class="menu-item push"><a href="login">Login</a></li>
+                <li><span class="menu-separator"></span></li>
+                <li class="menu-item"><a href="register">Register</a></li>
+            <?php else: ?>
+                <li class="menu-item push">
+                    <div class="menu-dropdown">
+                        <a href="profile"><?php echo Application::$app->user->getDisplayName()?></a>
+                        <div class="menu-dropdown-content">
+                            <a href="logout">Выйти</a>
+                        </div>
+                    </div>
+                </li>
+            <?php endif; ?>
         </ul>
 
     </nav>
-    <?php if(Application::$app->session->getFlash('success')): ?>
-    <div class="alert alert-success">
-        <p><?php echo Application::$app->session->getFlash('success')?></p>
-    </div>
+    <?php if (Application::$app->session->getFlash('success')): ?>
+        <div class="alert alert-success">
+            <p><?php echo Application::$app->session->getFlash('success') ?></p>
+        </div>
     <?php endif; ?>
     {{content}}
 
     <div class="content-footer">
         <br>
         <br>
-        Отче наш, сущий на небесах! да святится имя Твое да приидет Царствие Твое; да будет воля Твоя и на земле, как на небе;
+        Отче наш, сущий на небесах! да святится имя Твое да приидет Царствие Твое; да будет воля Твоя и на земле, как на
+        небе;
     </div>
 </div>
 <footer>

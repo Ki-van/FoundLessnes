@@ -1,4 +1,5 @@
 <?php
+$this->title = 'Страница не найдена';
 ?>
 <div class="art-post-body">
 <h3>Not found</h3>

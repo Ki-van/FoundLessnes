@@ -1,3 +1,7 @@
+<?php
+    $this->title = 'Главная';
+?>
+
 <div class="art-post-body">
     <h2 class="art-post-header">
         <img src="../images/cross.png" alt="CROSS" width="22" height="32">

@@ -32,7 +32,7 @@ class SiteController extends Controller
 
     public function _404() {
         $params = [
-            'title' => 'Страница не найдена'
+            'title' => ''
         ];
         return $this->render('_404', $params);
     }

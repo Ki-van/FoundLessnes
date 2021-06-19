@@ -49,7 +49,7 @@ class Router
         }
 
         if (is_string($callback)) {
-            return $this->renderView($callback);
+            return Application::$app->view->renderView($callback);
         }
         if (is_array($callback)) {
             /**
@@ -60,42 +60,11 @@ class Router
             $controller->action = $callback[1];
             $callback[0] = $controller;
 
-            foreach ($controller->getMiddlewares() as $middleware){
+            foreach ($controller->getMiddlewares() as $middleware) {
                 $middleware->execute();
             }
         }
 
         return call_user_func($callback, $this->request, $this->response);
     }
-
-    public function renderView(string $view, array $params = [])
-    {
-        $layoutContent = $this->layoutContent($params);
-        $viewContent = $this->renderOnlyView($view, $params);
-        return str_replace('{{content}}', $viewContent, $layoutContent);
-    }
-
-    protected function layoutContent(array $params)
-    {
-        foreach ($params as $key => $value) {
-            $$key = $value;
-        }
-
-        $layout = Application::$app->controller->layout;
-        ob_start();
-        include_once Application::$ROOT_DIR . "/views/layouts/$layout.php";
-        return ob_get_clean();
-    }
-
-    protected function renderOnlyView($view, array $params)
-    {
-        foreach ($params as $key => $value) {
-            $$key = $value;
-        }
-        ob_start();
-        include_once Application::$ROOT_DIR . "/views/$view.php";
-        return ob_get_clean();
-    }
-
-
 }

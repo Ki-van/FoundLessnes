@@ -1,6 +1,9 @@
 <?php
-/** @var $title string */
 use app\core\Application;
+use app\core\View;
+
+/** @var $this View */
+
 
 ?>
 
@@ -12,7 +15,7 @@ use app\core\Application;
     <meta name="keywords" content="детерменизм безосновность философия">
 
     <link href="/css/stylesheet.css" rel="stylesheet" type="text/css">
-    <title><?php echo $title ?></title>
+    <title><?php echo $this->title ?></title>
     <link rel="shortcut icon" href="../images/cross.ico" type="image/x-icon">
 
 </head>

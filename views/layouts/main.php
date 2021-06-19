@@ -1,5 +1,5 @@
 <?php
-
+/** @var $title string */
 use app\core\Application;
 
 ?>
@@ -57,13 +57,13 @@ use app\core\Application;
                 </div>
             </li>
             <?php if (Application::isGuest()): ?>
-                <li class="menu-item push"><a href="login">Login</a></li>
+                <li class="menu-item push"><a href="/login">Login</a></li>
                 <li><span class="menu-separator"></span></li>
-                <li class="menu-item"><a href="register">Register</a></li>
+                <li class="menu-item"><a href="/register">Register</a></li>
             <?php else: ?>
                 <li class="menu-item push">
                     <div class="menu-dropdown">
-                        <a href="profile"><?php echo Application::$app->user->getDisplayName()?></a>
+                        <a href="/profile"><?php echo Application::$app->user->getDisplayName() ?></a>
                         <div class="menu-dropdown-content">
                             <a href="logout">Выйти</a>
                         </div>

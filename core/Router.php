@@ -28,7 +28,7 @@ class Router
         $this->routes['get'][$path] = $callback;
     }
 
-    public function post(string $path,  $callback)
+    public function post(string $path, $callback)
     {
         $this->routes['post'][$path] = $callback;
     }
@@ -39,19 +39,30 @@ class Router
         $method = $this->request->method();
         $callback = $this->routes[$method][$path] ?? false;
 
+
         Application::$app->controller = new SiteController();
+
         if ($callback === false) {
             $this->response->setStatusCode(404);
 
             return call_user_func([Application::$app->controller, '_404']);
-
         }
+
         if (is_string($callback)) {
             return $this->renderView($callback);
         }
-        if(is_array($callback)){
-            Application::$app->controller = new $callback[0]();
-            $callback[0] = Application::$app->controller;
+        if (is_array($callback)) {
+            /**
+             * @var Controller $controller
+             */
+            $controller = new $callback[0]();
+            Application::$app->controller = $controller;
+            $controller->action = $callback[1];
+            $callback[0] = $controller;
+
+            foreach ($controller->getMiddlewares() as $middleware){
+                $middleware->execute();
+            }
         }
 
         return call_user_func($callback, $this->request, $this->response);
@@ -66,7 +77,7 @@ class Router
 
     protected function layoutContent(array $params)
     {
-        foreach ($params as $key =>$value){
+        foreach ($params as $key => $value) {
             $$key = $value;
         }
 
@@ -78,7 +89,7 @@ class Router
 
     protected function renderOnlyView($view, array $params)
     {
-        foreach ($params as $key =>$value){
+        foreach ($params as $key => $value) {
             $$key = $value;
         }
         ob_start();

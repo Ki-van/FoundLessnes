@@ -51,6 +51,7 @@ class Router
         if (is_string($callback)) {
             return Application::$app->view->renderView($callback);
         }
+
         if (is_array($callback)) {
             /**
              * @var Controller $controller

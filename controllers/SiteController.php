@@ -10,31 +10,26 @@ use app\core\Router;
 class SiteController extends Controller
 {
     public function home(){
-        $params = [
-            'title' => 'Foundlessness'
-        ];
-        return $this->render('home', $params);
+        return $this->render('home');
     }
 
     public function participation(){
-        $params = [
-            'title' => 'Участие'
-        ];
-        return $this->render('participation', $params);
+        return $this->render('participation');
     }
 
     public function handleParticipation(Request $request){
         $body = $request->getBody();
         var_dump($body);
-        exit;
+
         return "Handling for shure";
     }
 
     public function _404() {
-        $params = [
-            'title' => ''
-        ];
-        return $this->render('_404', $params);
+        return $this->render('_404');
+    }
+
+    public function articles(){
+        return $this->render('articles');
     }
 
 }

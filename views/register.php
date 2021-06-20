@@ -1,5 +1,10 @@
 <?php
-/** @var $model \app\models\User */
+/**
+ * @var $model \app\models\User
+ * @var $this \app\core\View
+ */
+
+$this->title = 'Регистрация';
 ?>
 
 <div class="art-post-body">

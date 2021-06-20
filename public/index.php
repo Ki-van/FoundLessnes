@@ -20,9 +20,6 @@ $config = [
 $app = new Application(dirname(__DIR__), $config);
 
 $app->router->get('/', [SiteController::class, 'home']);
-$app->router->post('/', function () {
-    return "O";
-});
 
 $app->router->get('/participation', [SiteController::class, 'participation']);
 $app->router->post('/participation', [SiteController::class, 'handleParticipation']);
@@ -37,5 +34,7 @@ $app->router->get('/logout', [AuthController::class, 'logout']);
 
 $app->router->get('/profile', [AuthController::class, 'profile']);
 
+$app->router->get('/articles', [SiteController::class, 'articles']);
+$app->router->get('/articles/{artId}', [])
 $app->run();
 

@@ -1,59 +1,26 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="description" content="Ход завязки всего на всем или культура детерменизма"/>
-    <meta name="keywords" content="детерменизм безосновность философия">
-    <link href="../public/css/stylesheet.css" rel="stylesheet" type="text/css">
-    <title>Статьи</title>
-    <link rel="shortcut icon" href="../public/images/cross.ico" type="image/x-icon">
-</head>
-<body>
+<?php
+/**
+ * @var $this \app\core\View
+ */
 
-<header>
-    <div class="art-header-center">
-        <div class="art-header-png"></div>
-    </div>
-    <div class="art-header-wrapper">
-        <div class="art-header-inner">
-            <div class="art-headerobject"></div>
-            <div class="art-logo">
-                <h1 id="name-text" class="art-logo-name"><a href="index.php">Познания сфер интегральный хаос (ПСИХ)</a></h1>
-                <h2 id="slogan-text" class="art-logo-text"><< Опоры и начала - лишь упрощения >></h2>
-            </div>
-        </div>
-    </div>
-</header>
+$this->title = 'Статьи';
+?>
 
-<div class="content">
-    <nav>
-        <ul class="nav">
-            <li class="menu-item"><a href="index.php">Главная</a></li>
-            <li><span class="menu-separator"></span></li>
-            <li class="menu-item menu-item-active"><a href="Articles.php">Статьи</a></li>
-            <li><span class="menu-separator"></span></li>
-            <li class="menu-item"><a href="#">Прогресс</a></li>
-            <li><span class="menu-separator"></span></li>
-            <li class="menu-item"><a href="participation.php">Участие</a></li>
-            <li><span class="menu-separator"></span></li>
-            <li class="menu-item"><a href="About.html">О нас</a></li>
-        </ul>
-    </nav>
+<div class="art-post-body">
     <div class="art-post-body">
-        <div class="art-post-body">
-            <h2 class="art-post-header">
-                <img src="/images/cross.png" alt="CROSS" width="22" height="32">
-                <a href="#">
-                    Статьи
-                </a>
-            </h2>
-            <div class="art-post-content">
-                <p>
-                    Это список статей, сгруппированных по сферам познания и направлению нашей совместной деятельности
-                </p>
-            </div>
+        <h2 class="art-post-header">
+            <img src="/images/cross.png" alt="CROSS" width="22" height="32">
+            <a href="#">
+                Статьи
+            </a>
+        </h2>
+        <div class="art-post-content">
+            <p>
+                Это список статей, сгруппированных по сферам познания и направлению нашей совместной деятельности
+            </p>
         </div>
-        <div class="art-columns">
+    </div>
+    <div class="art-columns">
         <div class="art-content-lcolumn">
             <h3>Философия</h3>
             <ul>
@@ -93,19 +60,5 @@
                 <li><a href="">Темпористика</a></li>
             </ul>
         </div>
-        </div>
     </div>
-        <div class="content-footer">
-            <br>
-            <br>
-
-            Отче наш, сущий на небесах! да святится имя Твое да приидет Царствие Твое; да будет воля Твоя и на земле, как на небе;
-        </div>
-    </div>
-
-
-<footer>
-
-</footer>
-</body>
-</html>
+</div>

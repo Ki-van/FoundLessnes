@@ -25,14 +25,13 @@ class AuthController extends Controller
         if ($request->isPost()) {
             $loginForm->loadData($request->getBody());
 
-            if($loginForm->validate() && $loginForm->login()){
+            if ($loginForm->validate() && $loginForm->login()) {
                 $response->redirect('/');
                 return;
             }
         }
         return $this->render('login', [
-            'model'=> $loginForm,
-            'title' => 'Вход'
+            'model' => $loginForm,
         ]);
     }
 
@@ -42,15 +41,14 @@ class AuthController extends Controller
         if ($request->isPost()) {
             $user->loadData($request->getBody());
 
-            if($user->validate() && $user->save()){
+            if ($user->validate() && $user->save()) {
                 Application::$app->session->setFlash('success', 'Регистрация прошла успешно');
                 Application::$app->response->redirect('/');
             }
         }
 
         return $this->render('register', [
-            'model'=>$user,
-            'title' => 'Регистрация'
+            'model' => $user,
         ]);
     }
 
@@ -62,8 +60,6 @@ class AuthController extends Controller
 
     public function profile(Request $request)
     {
-        return $this->render('profile', [
-            'title' => 'Профиль'
-        ]);
+        return $this->render('profile');
     }
 }

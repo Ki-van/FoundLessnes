@@ -15,6 +15,16 @@ class View
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
 
+    public function renderOnlyView($view, array $params)
+    {
+        foreach ($params as $key => $value) {
+            $$key = $value;
+        }
+        ob_start();
+        include_once Application::$ROOT_DIR . "/views/$view.php";
+        return ob_get_clean();
+    }
+
     public function layoutContent(array $params)
     {
         foreach ($params as $key => $value) {
@@ -24,16 +34,6 @@ class View
         $layout = Application::$app->controller->layout;
         ob_start();
         include_once Application::$ROOT_DIR . "/views/layouts/$layout.php";
-        return ob_get_clean();
-    }
-
-    public function renderOnlyView($view, array $params)
-    {
-        foreach ($params as $key => $value) {
-            $$key = $value;
-        }
-        ob_start();
-        include_once Application::$ROOT_DIR . "/views/$view.php";
         return ob_get_clean();
     }
 }

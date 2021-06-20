@@ -1,3 +1,11 @@
+<?php
+/**
+ * @var $this \app\core\View
+ */
+
+$this->title = 'Участие';
+?>
+
 <div class="art-post-body">
     <div class="art-post-body">
         <h2 class="art-post-header">

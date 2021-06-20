@@ -1,7 +1,11 @@
 <?php
 /**
  * @var $exception Exception
+ * @var $this View
  */
+
+use app\core\View;
+
 $this->title = 'Ошибка';
 ?>
 

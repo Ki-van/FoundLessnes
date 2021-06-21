@@ -10,11 +10,11 @@ use app\core\Router;
 class SiteController extends Controller
 {
     public function home(){
-        return $this->render('home');
+        return $this->renderView('home');
     }
 
     public function participation(){
-        return $this->render('participation');
+        return $this->renderView('participation');
     }
 
     public function handleParticipation(Request $request){
@@ -25,11 +25,6 @@ class SiteController extends Controller
     }
 
     public function _404() {
-        return $this->render('_404');
+        return $this->renderView('_404');
     }
-
-    public function articles(){
-        return $this->render('articles');
-    }
-
 }

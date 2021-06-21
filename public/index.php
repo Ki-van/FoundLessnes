@@ -1,9 +1,11 @@
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use app\controllers\ArticlesController;
 use app\controllers\AuthController;
 use app\controllers\SiteController;
 use app\core\Application;
+use app\models\Article;
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
@@ -34,7 +36,9 @@ $app->router->get('/logout', [AuthController::class, 'logout']);
 
 $app->router->get('/profile', [AuthController::class, 'profile']);
 
-$app->router->get('/articles', [SiteController::class, 'articles']);
-$app->router->get('/articles/{artId}', [])
+$app->router->get('/articles', [ArticlesController::class, 'articles']);
+$app->router->get('/articles/{url}', [ArticlesController::class, 'articles']);
+
+
 $app->run();
 

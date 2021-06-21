@@ -6,22 +6,28 @@ namespace app\core;
 
 class View
 {
-    public string $title;
+    public string $title = '';
+
 
     public function renderView(string $view, array $params = [])
+    {
+        return $this->render("/views/$view.php", $params);
+    }
+
+    public function render(string $view, array $params)
     {
         $viewContent = $this->renderOnlyView($view, $params);
         $layoutContent = $this->layoutContent($params);
         return str_replace('{{content}}', $viewContent, $layoutContent);
     }
 
-    public function renderOnlyView($view, array $params)
+    public function renderOnlyView(string $view, array $params)
     {
         foreach ($params as $key => $value) {
             $$key = $value;
         }
         ob_start();
-        include_once Application::$ROOT_DIR . "/views/$view.php";
+        include_once Application::$ROOT_DIR . $view;
         return ob_get_clean();
     }
 
@@ -36,4 +42,11 @@ class View
         include_once Application::$ROOT_DIR . "/views/layouts/$layout.php";
         return ob_get_clean();
     }
+
+    public function renderArticle(string $article, array $params = [])
+    {
+        return $this->render("/views/articles/$article.php", $params);
+    }
+
+
 }

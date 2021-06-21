@@ -79,7 +79,7 @@
 <div class="art-post-body">
     <h2 class="art-post-header">
         <img src="../images/cross.png" alt="CROSS" width="22" height="32">
-        <a href="../articles/psix_foundation.html">
+        <a href="articles/psix_foundation.php">
             Основания ПСИХ
         </a>
     </h2>

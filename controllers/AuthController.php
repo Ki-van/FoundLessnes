@@ -30,7 +30,7 @@ class AuthController extends Controller
                 return;
             }
         }
-        return $this->render('login', [
+        return $this->renderView('login', [
             'model' => $loginForm,
         ]);
     }
@@ -47,7 +47,7 @@ class AuthController extends Controller
             }
         }
 
-        return $this->render('register', [
+        return $this->renderView('register', [
             'model' => $user,
         ]);
     }
@@ -60,6 +60,6 @@ class AuthController extends Controller
 
     public function profile(Request $request)
     {
-        return $this->render('profile');
+        return $this->renderView('profile');
     }
 }

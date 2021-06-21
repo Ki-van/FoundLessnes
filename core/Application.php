@@ -2,7 +2,9 @@
 
 namespace app\core;
 
+use app\core\exception\PageNotFoundException;
 use app\models\User;
+use Exception;
 
 class Application
 {
@@ -49,7 +51,10 @@ class Application
     {
         try {
             echo $this->router->resolve();
-        } catch (\Exception $e) {
+        } catch (PageNotFoundException $e){
+            $this->response->setStatusCode($e->getCode());
+            echo $this->view->renderView('_404');
+        } catch (Exception $e) {
             $this->response->setStatusCode($e->getCode());
             echo $this->view->renderView('_error', [
                 'exception' => $e

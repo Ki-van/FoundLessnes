@@ -27,7 +27,7 @@ $this->title = 'Статьи';
                 <li><a href="">Философия математики</a></li>
                 <li><a href="">Метод философии</a></li>
                 <li><a href="">Безосновность</a></li>
-                <li><a href="../articles/psix_foundation.html">Основания ПСИХ</a></li>
+                <li><a href="/articles/psix_foundation">Основания ПСИХ</a></li>
                 <li><a href="">Философское доказательство судьбы</a></li>
                 <li><a href="">Кто я, а кто не я?</a></li>
                 <li><a href="">Структура вечных вопросов по типу "Смысла жизни" и "Цели мироздания"</a></li>
@@ -55,7 +55,7 @@ $this->title = 'Статьи';
             <ul>
                 <li><a href="">Теоретическая психология</a></li>
                 <li><a href="">Психоанализ</a></li>
-                <li><a href="../articles/Socionics.html">Соционика</a></li>
+                <li><a href="/articles/socionics">Соционика</a></li>
                 <li><a href="">Психософия</a></li>
                 <li><a href="">Темпористика</a></li>
             </ul>

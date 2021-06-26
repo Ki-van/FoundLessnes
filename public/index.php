@@ -5,7 +5,6 @@ use app\controllers\ArticlesController;
 use app\controllers\AuthController;
 use app\controllers\SiteController;
 use app\core\Application;
-use app\models\Article;
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
@@ -19,12 +18,19 @@ $config = [
     ]
 ];
 
-$app = new Application(dirname(__DIR__), $config);
+try {
+    $app = new Application(dirname(__DIR__), $config);
+} catch (Exception $e) {
+    http_response_code(502);
+    echo '<h1>502</h1>';
+    die();
+
+}
 
 $app->router->get('/', [SiteController::class, 'home']);
 
 $app->router->get('/participation', [SiteController::class, 'participation']);
-$app->router->post('/participation', [SiteController::class, 'handleParticipation']);
+$app->router->post('/participation', [SiteController::class, 'participation']);
 
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);

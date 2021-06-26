@@ -9,7 +9,7 @@ class Request
     public function getPath()
     {
         $path = $_SERVER["REQUEST_URI"];
-        if (!$path)
+        if (!$path || $path === '/')
             return '/';
 
         $path = urldecode($path);
@@ -55,6 +55,11 @@ class Request
         }
 
         return $body;
+    }
+
+    public function containsFile(): bool
+    {
+        return !empty($_FILES);
     }
 
 }

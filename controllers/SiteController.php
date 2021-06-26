@@ -6,6 +6,7 @@ use app\core\Application;
 use app\core\Controller;
 use app\core\Request;
 use app\core\Router;
+use app\models\ParticipationForm;
 
 class SiteController extends Controller
 {
@@ -13,15 +14,17 @@ class SiteController extends Controller
         return $this->renderView('home');
     }
 
-    public function participation(){
-        return $this->renderView('participation');
-    }
+    public function participation(Request $request){
+        $participationForm = new ParticipationForm();
+        if($request->isGet()) {
+            return $this->renderView('participation', [
+                'model' => $participationForm
+            ]);
+        }
+        else {
+            $participationForm->loadData(array_merge($request->getBody(), $_FILES));
 
-    public function handleParticipation(Request $request){
-        $body = $request->getBody();
-        var_dump($body);
-
-        return "Handling for shure";
+        }
     }
 
     public function _404() {

@@ -1,6 +1,7 @@
 <?php
 /**
  * @var $this \app\core\View
+ * @var $model \app\models\ParticipationForm
  */
 
 $this->title = 'Участие';
@@ -18,17 +19,36 @@ $this->title = 'Участие';
     </div>
     <div class="art-post-content">
         <h4>Если вы хотите стать частью ПСИХ, прочитайте текст ниже:</h4>
-        <p>ПСИХ - уважаемае мной и организованное мной движение, участники которого ищущие люди, требующие от себя смотреть дальше своего носа. Целью движения не является коммерческая выгода, а чистый, идеальный интерес. Если вы прочитали Созерцание чистого разума и решили что познали истину, вам будут рады, но не у нас) </p>
-        <p>Участие в движении не предполагает авторизации, но так вы сможите называться своим именем и вас будет легко отличить от других учавствующих.</p>
-        <p>Если вы чувствуете, что можете дополнить картину надистины, прикрепите вашу статью в форме ниже и в ходе обсуждения мы найдем ей место на карта прогресса</p>
-        <p>Пожалуйста, структурируйте ваши статьи, в потоке сознания искать иглу, что наркоману продеть нитку в ту же иглу, занятие интересное, но не для нас. (ДОЗУ)</p>
+        <p>ПСИХ - уважаемае мной и организованное мной движение, участники которого ищущие люди, требующие от себя
+            смотреть дальше своего носа. Целью движения не является коммерческая выгода, а чистый, идеальный интерес.
+            Если вы прочитали Созерцание чистого разума и решили что познали истину, вам будут рады, но не у нас) </p>
+        <p>Участие в движении не предполагает авторизации, но так вы сможите называться своим именем и вас будет легко
+            отличить от других учавствующих.</p>
+        <p>Если вы чувствуете, что можете дополнить картину надистины, прикрепите вашу статью в форме ниже и в ходе
+            обсуждения мы найдем ей место на карта прогресса</p>
+        <p>Пожалуйста, структурируйте ваши статьи, в потоке сознания искать иглу, что наркоману продеть нитку в ту же
+            иглу, занятие интересное, но не для нас. (ДОЗУ)</p>
     </div>
 
-    <form  name="article_form" action="" enctype="multipart/form-data" method="post" >
+
+    <?php use app\core\form\Form;
+
+    $form = Form::begin('', 'post','multipart/form-data'); ?>
+    <?php echo $form->field($model, 'heading') ?>
+    <?php echo $form->field($model, 'description') ?>
+    <?php echo $form->field($model, 'email') ?>
+    <?php echo $form->field($model, 'file')->fileField('text/plain,application/msword,application/pdf') ?>
+
+    <div class="form-group">
+        <input name="submit" type="submit" value="Отправить">
+    </div>
+    <?php Form::end() ?>
+
+   <!-- <form name="article_form" action="" enctype="multipart/form-data" method="post">
         <div class="form-wrapper">
             <label>
                 <span class="form-label-text">Тема статьи</span>
-                <input name="article-theme" class="field" type="text" >
+                <input name="article-theme" class="field" type="text">
             </label>
             <label>
                 <span class="form-label-text">Описание статьи</span>
@@ -36,7 +56,7 @@ $this->title = 'Участие';
             </label>
             <label>
                 <span class="form-label-text">Почта</span>
-                <input name="email" type="text" class="field" class="field" >
+                <input name="email" type="text" class="field" class="field">
             </label>
             <label>
                 <span class="form-label-text">Статья</span>
@@ -46,5 +66,5 @@ $this->title = 'Участие';
                 <input name="submit" type="submit" value="Отправить">
             </div>
         </div>
-    </form>
+    </form>-->
 </div>

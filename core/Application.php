@@ -67,6 +67,7 @@ class Application
         $this->user = $user;
         $primaryKey = $user->primaryKey();
         $primaryValue = $user->{$primaryKey};
+
         $this->session->set('user', $primaryValue);
 
         return true;
@@ -77,5 +78,4 @@ class Application
         $this->user = null;
         $this->session->remove('user');
     }
-
 }

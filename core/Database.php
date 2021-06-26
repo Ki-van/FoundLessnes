@@ -6,7 +6,7 @@ namespace app\core;
 
 class Database
 {
-    public \PDO $pdo;
+    public ?\PDO $pdo;
 
     /**
      * Database constructor.
@@ -84,4 +84,8 @@ class Database
         $statement->execute();
     }
 
+    public function __destruct()
+    {
+        $this->pdo = null;
+    }
 }

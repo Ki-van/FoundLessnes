@@ -8,8 +8,8 @@ use app\core\Model;
 
 class Form
 {
-    static public function begin($action, $method){
-        echo sprintf('<form action="%s" method="%s">', $action, $method);
+    static public function begin($action, $method, $enctype = ''){
+        echo sprintf('<form action="%s" method="%s" enctype="%s">', $action, $method, $enctype);
         return new Form();
     }
 

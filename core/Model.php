@@ -4,6 +4,9 @@
 namespace app\core;
 
 
+use app\core\file\UploadedFile;
+use Dotenv\Store\FileStore;
+
 abstract class Model
 {
     public const RULE_REQUIRED = 'required';
@@ -12,6 +15,7 @@ abstract class Model
     public const RULE_MIN = 'min';
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'unique';
+    public const RULE_FILE_ACCEPT = 'accept';
 
 
     public array $errors = [];
@@ -24,7 +28,6 @@ abstract class Model
                     $this->{$key} = $value;
             }
         }
-
     }
 
     public function validate(): bool
@@ -70,6 +73,10 @@ abstract class Model
                     }
                 }
 
+                if($ruleName === self::RULE_FILE_ACCEPT){
+
+                }
+
             }
         }
 
@@ -97,7 +104,8 @@ abstract class Model
             self::RULE_MIN => '* Минимальный размер этого поля {min}',
             self::RULE_MAX => '* Максимальный размер этого поля {max}',
             self::RULE_EMAIL => '* Email неправильный',
-            self::RULE_UNIQUE => 'Запись со значением в поле {field} уже есть'
+            self::RULE_UNIQUE => '* Запись со значением в поле {field} уже есть',
+            self::RULE_FILE_REQUIRED => ''
         ];
     }
 

@@ -3,6 +3,8 @@
  * @var $this \app\core\View
  * @var $model \app\models\ParticipationForm
  */
+use app\core\form\TextareaField;
+use app\core\form\InputFileField;
 
 $this->title = 'Участие';
 ?>
@@ -33,38 +35,17 @@ $this->title = 'Участие';
 
     <?php use app\core\form\Form;
 
+
     $form = Form::begin('', 'post','multipart/form-data'); ?>
     <?php echo $form->field($model, 'heading') ?>
-    <?php echo $form->field($model, 'description') ?>
+    <?php echo new TextareaField($model, 'description'); ?>
     <?php echo $form->field($model, 'email') ?>
-    <?php echo $form->field($model, 'file')->fileField('text/plain,application/msword,application/pdf') ?>
+    <?php echo (new InputFileField($model, 'files'))
+        ->accept($model->getRuleValue('accept'))
+        ->multiple(true); ?>
 
     <div class="form-group">
         <input name="submit" type="submit" value="Отправить">
     </div>
     <?php Form::end() ?>
-
-   <!-- <form name="article_form" action="" enctype="multipart/form-data" method="post">
-        <div class="form-wrapper">
-            <label>
-                <span class="form-label-text">Тема статьи</span>
-                <input name="article-theme" class="field" type="text">
-            </label>
-            <label>
-                <span class="form-label-text">Описание статьи</span>
-                <textarea name="article-brief" class="field"></textarea>
-            </label>
-            <label>
-                <span class="form-label-text">Почта</span>
-                <input name="email" type="text" class="field" class="field">
-            </label>
-            <label>
-                <span class="form-label-text">Статья</span>
-                <input name="article" type="file" multiple accept="text/plain,application/msword,application/pdf,">
-            </label>
-            <div class="form-submit-button">
-                <input name="submit" type="submit" value="Отправить">
-            </div>
-        </div>
-    </form>-->
 </div>

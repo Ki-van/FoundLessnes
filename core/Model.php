@@ -4,6 +4,7 @@
 namespace app\core;
 
 
+
 use app\core\file\UploadedFile;
 use Dotenv\Store\FileStore;
 
@@ -15,7 +16,8 @@ abstract class Model
     public const RULE_MIN = 'min';
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'unique';
-    public const RULE_FILE_ACCEPT = 'accept';
+    public const RULE_FILE = 'file';
+
 
 
     public array $errors = [];
@@ -27,6 +29,24 @@ abstract class Model
                 if (property_exists($this, $key))
                     $this->{$key} = $value;
             }
+        }
+    }
+
+    public function loadFiles()
+    {
+        foreach ($_FILES as $key => $value) {
+            $this->{$key} = [];
+            if(is_array($value)){
+                $fileFields = [];
+                for ($i = 0; $i < UploadedFile::filesCount($value); $i++){
+                    foreach ($value as $fileField => $files)
+                    {
+                        $fileFields[$fileField] = $files[$i];
+                    }
+                    $this->{$key}[] = new UploadedFile($fileFields);
+                }
+            } else
+                $this->{$key}[] = $value;
         }
     }
 
@@ -73,8 +93,9 @@ abstract class Model
                     }
                 }
 
-                if($ruleName === self::RULE_FILE_ACCEPT){
-
+                if($ruleName === self::RULE_FILE && !$value->validate($rule['rules']))
+                {
+                    $this->addErrorForRule($attribute, self::RULE_FILE, ['file_error' => $value->getErrorMessage()]);
                 }
 
             }
@@ -84,6 +105,19 @@ abstract class Model
     }
 
     abstract public function rules(): array;
+
+    public function getRuleValue(string $needle)
+    {
+        foreach ($this->rules() as $attribute) {
+            foreach ($attribute as $key => $value) {
+                if(!is_array($value))
+                    continue;
+
+                if(array_key_exists($needle, $value))
+                    return $value[$needle];
+            }
+        }
+    }
 
     private function addErrorForRule(string $attribute, string $rule, array $params = [])
     {
@@ -105,7 +139,7 @@ abstract class Model
             self::RULE_MAX => '* Максимальный размер этого поля {max}',
             self::RULE_EMAIL => '* Email неправильный',
             self::RULE_UNIQUE => '* Запись со значением в поле {field} уже есть',
-            self::RULE_FILE_REQUIRED => ''
+            self::RULE_FILE => '* {file_error}'
         ];
     }
 

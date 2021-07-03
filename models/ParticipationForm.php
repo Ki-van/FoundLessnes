@@ -4,6 +4,7 @@
 namespace app\models;
 
 
+use app\core\file\UploadedFile;
 use app\core\Model;
 
 class ParticipationForm extends Model
@@ -11,7 +12,7 @@ class ParticipationForm extends Model
     public string $heading = '';
     public string $description = '';
     public string $email = '';
-    public $file = null;
+    public array $files = [];
 
     public function rules(): array
     {
@@ -19,7 +20,16 @@ class ParticipationForm extends Model
             'heading' => [self::RULE_REQUIRED, [self::RULE_MAX, 'max' => 64]],
             'description' => [self::RULE_REQUIRED, [self::RULE_MAX, 'max' => 600]],
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
-            'file' => [self::RULE_REQUIRED, [self::RULE_FILE_ACCEPT, 'accept' => 'text/plain|application/msword|application/pdf' ]]
+            'files' => [
+                self::RULE_REQUIRED,
+                [
+                    self::RULE_FILE,
+                    self::RULE_FILE_ACCEPT =>
+                        'text/plain,application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf',
+                    self::RULE_FILE_SIZE => 2000000
+                ]
+            ]
+
         ];
     }
 
@@ -29,8 +39,9 @@ class ParticipationForm extends Model
             'heading' => 'Тема статьи',
             'description' => 'Краткое описание',
             'email' => 'Почта',
-            'file' => 'Статья'
+            'files' => 'Документы'
         ];
     }
+
 
 }

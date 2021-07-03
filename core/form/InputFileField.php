@@ -4,10 +4,18 @@
 namespace app\core\form;
 
 
+use app\core\Model;
+
 class InputFileField extends BaseField
 {
     public string $accept = '';
     public bool $multiple = false;
+
+    public function __construct(Model $model, string $attribute)
+    {
+        parent::__construct($model, $attribute);
+    }
+
 
     public function renderInput(): string
     {

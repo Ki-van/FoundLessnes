@@ -41,7 +41,7 @@ $this->title = 'Участие';
     <?php echo new TextareaField($model, 'description'); ?>
     <?php echo $form->field($model, 'email') ?>
     <?php echo (new InputFileField($model, 'files'))
-        ->accept($model->getRuleValue('accept'))
+        ->accept($model->rules()['files'][1]['file_accept']) //TODO: add search for rule param in rules by name
         ->multiple(true); ?>
 
     <div class="form-group">

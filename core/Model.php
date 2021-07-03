@@ -4,7 +4,6 @@
 namespace app\core;
 
 
-
 use app\core\file\UploadedFile;
 use Dotenv\Store\FileStore;
 
@@ -17,7 +16,8 @@ abstract class Model
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'unique';
     public const RULE_FILE = 'file';
-
+    public const RULE_FILE_ACCEPT = 'file_accept';
+    public const RULE_FILE_SIZE = 'file_size'; //bytes
 
 
     public array $errors = [];
@@ -28,6 +28,7 @@ abstract class Model
             foreach ($data as $key => $value) {
                 if (property_exists($this, $key))
                     $this->{$key} = $value;
+
             }
         }
     }
@@ -36,11 +37,10 @@ abstract class Model
     {
         foreach ($_FILES as $key => $value) {
             $this->{$key} = [];
-            if(is_array($value)){
+            if (is_array($value)) {
                 $fileFields = [];
-                for ($i = 0; $i < UploadedFile::filesCount($value); $i++){
-                    foreach ($value as $fileField => $files)
-                    {
+                for ($i = 0; $i < UploadedFile::filesCount($value); $i++) {
+                    foreach ($value as $fileField => $files) {
                         $fileFields[$fileField] = $files[$i];
                     }
                     $this->{$key}[] = new UploadedFile($fileFields);
@@ -93,9 +93,23 @@ abstract class Model
                     }
                 }
 
-                if($ruleName === self::RULE_FILE && !$value->validate($rule['rules']))
-                {
-                    $this->addErrorForRule($attribute, self::RULE_FILE, ['file_error' => $value->getErrorMessage()]);
+                if ($ruleName === self::RULE_FILE) {
+                    foreach ($value as $file) {
+                        /**
+                         * @var $file UploadedFile
+                         */
+                        if ($file->error != UPLOAD_ERR_OK) {
+                            $this->addErrorForRule($attribute, self::RULE_FILE, ['file_error' => $file->getErrorMessage()]);
+                            continue;
+                        }
+
+                        if (!in_array($file->type, explode(',', $rule[self::RULE_FILE_ACCEPT]))) {
+                            $this->addErrorForRule($attribute, self::RULE_FILE_ACCEPT, ['name' => $file->name]);
+                        }
+                        if ($file->size > $rule[self::RULE_FILE_SIZE]) {
+                            $this->addErrorForRule($attribute, self::RULE_FILE_SIZE, ['name' => $file->name, 'file_size' => $file->size / 1000000]);
+                        }
+                    }
                 }
 
             }
@@ -105,19 +119,6 @@ abstract class Model
     }
 
     abstract public function rules(): array;
-
-    public function getRuleValue(string $needle)
-    {
-        foreach ($this->rules() as $attribute) {
-            foreach ($attribute as $key => $value) {
-                if(!is_array($value))
-                    continue;
-
-                if(array_key_exists($needle, $value))
-                    return $value[$needle];
-            }
-        }
-    }
 
     private function addErrorForRule(string $attribute, string $rule, array $params = [])
     {
@@ -139,7 +140,9 @@ abstract class Model
             self::RULE_MAX => '* Максимальный размер этого поля {max}',
             self::RULE_EMAIL => '* Email неправильный',
             self::RULE_UNIQUE => '* Запись со значением в поле {field} уже есть',
-            self::RULE_FILE => '* {file_error}'
+            self::RULE_FILE => '{file_error}',
+            self::RULE_FILE_ACCEPT => '* Файл {name} недопустимого типа',
+            self::RULE_FILE_SIZE => '* Файл {name} больше {file_size} Мб'
         ];
     }
 

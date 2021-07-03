@@ -18,14 +18,14 @@ $config = [
     ]
 ];
 
-try {
+/*try {
     $app = new Application(dirname(__DIR__), $config);
 } catch (Exception $e) {
     http_response_code(502);
     echo '<h1>502</h1>';
     die();
-
-}
+}*/
+$app = new Application(dirname(__DIR__), $config);
 
 $app->router->get('/', [SiteController::class, 'home']);
 

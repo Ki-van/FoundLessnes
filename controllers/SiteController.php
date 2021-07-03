@@ -32,17 +32,20 @@ class SiteController extends Controller
                     /** @var UploadedFile $file */
                     $file->move($dirName);
                 }, $participationForm->files);
-                (new Article($participationForm->heading, $participationForm->description, $dirName, 0))->save();
+
+                if (!Application::isGuest())
+                    $userId = Application::$app->user->{Application::$app->user->primaryKey()};
+                else
+                    $userId = 0;
+                (new Article($participationForm->heading, $participationForm->description, $dirName, $userId))->save();
 
                 Application::$app->session->setFlash('success', 'Спасибо за участие');
-                if (Application::$app->user) {
+                if (!Application::isGuest()) {
                     $url = '/profile';
                 } else {
                     $url = '/';
                 }
                 Application::$app->response->redirect($url);
-
-
             }
         }
         return $this->renderView('participation', [

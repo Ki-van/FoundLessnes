@@ -16,7 +16,10 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->registerMiddleware(new AuthMiddleware(['profile']));
+        $this->registerMiddleware(new AuthMiddleware(AuthMiddleware::GUEST, ['profile']));
+        $this->registerMiddleware(new AuthMiddleware(AuthMiddleware::NOT_GUEST,
+            ['login', 'register'],
+            fn() => Application::$app->response->redirect('/profile')));
     }
 
     public function login(Request $request, Response $response)

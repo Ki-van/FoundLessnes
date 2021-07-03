@@ -4,9 +4,11 @@ namespace app\controllers;
 
 use app\core\Application;
 use app\core\Controller;
+use app\core\file\UploadedFile;
 use app\core\Request;
 use app\core\Router;
 use app\core\Session;
+use app\models\Article;
 use app\models\ParticipationForm;
 
 class SiteController extends Controller
@@ -23,18 +25,24 @@ class SiteController extends Controller
 
             $participationForm->loadData($request->getBody());
             $participationForm->loadFiles();
-            if($participationForm->validate())
-            {
-                Application::$app->session->setFlash('success', 'Спасибо за участие');
+            if ($participationForm->validate()) {
+                $dirName = 'download\\' . date("d-m-y H.i.s");
+                mkdir($dirName);
+                array_map(function ($file) use ($dirName, $participationForm) {
+                    /** @var UploadedFile $file */
+                    $file->move($dirName);
+                }, $participationForm->files);
+                (new Article($participationForm->heading, $participationForm->description, $dirName, 0))->save();
 
-                if(Application::$app->user)
-                {
+                Application::$app->session->setFlash('success', 'Спасибо за участие');
+                if (Application::$app->user) {
                     $url = '/profile';
-                } else
-                {
+                } else {
                     $url = '/';
                 }
                 Application::$app->response->redirect($url);
+
+
             }
         }
         return $this->renderView('participation', [

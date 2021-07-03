@@ -22,7 +22,7 @@ $this->title = 'Соционика';
             <span class="date"><?php echo $model->changed_at?></span>
             |
             <a href="#" class="url">
-                <?php echo $model->author->name?>
+                <?php echo $model->author_id->name?>
             </a>
         </div>
         <div class="art-post-content">

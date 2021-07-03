@@ -28,6 +28,18 @@ class UploadedFile extends File
             return -1;
     }
 
+    public function move(string $directory, string $name = null)
+    {
+        if(!$name)
+            $name = str_replace(' ', '_', filter_var(transliterator_transliterate('Russian-Latin/BGN', $this->name), FILTER_SANITIZE_SPECIAL_CHARS));
+
+        $moved = move_uploaded_file($this->tmp_name, "$directory\\".$name);
+
+        if (!$moved) {
+            throw new \Exception('Fail to move file');
+        }
+    }
+
     public function getErrorMessage(): string
     {
         return $this->codeToMessage($this->error);

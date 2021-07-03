@@ -25,7 +25,7 @@ class ArticlesController extends Controller
              */
             $article = Article::findOne($params);
             if($article){
-                $article->author = User::findOne([User::primaryKey() => $article->author]);
+                $article->author_id = User::findOne([User::primaryKey() => $article->author_id]);
                 return $this->renderArticle($article->url, [
                     'model' => $article
                 ]);

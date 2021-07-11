@@ -6,7 +6,7 @@ namespace app\controllers;
 
 use app\core\Application;
 use app\core\Controller;
-use app\core\middlewares\AuthMiddleware;
+use app\core\middlewares\AuthenticationMiddleware;
 use app\core\Request;
 use app\core\Response;
 use app\models\LoginForm;
@@ -16,8 +16,8 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->registerMiddleware(new AuthMiddleware(AuthMiddleware::GUEST, ['profile']));
-        $this->registerMiddleware(new AuthMiddleware(AuthMiddleware::NOT_GUEST,
+        $this->registerMiddleware(new AuthenticationMiddleware(AuthenticationMiddleware::GUEST, ['profile']));
+        $this->registerMiddleware(new AuthenticationMiddleware(AuthenticationMiddleware::NOT_GUEST,
             ['login', 'register'],
             fn() => Application::$app->response->redirect('/profile')));
     }
@@ -30,7 +30,6 @@ class AuthController extends Controller
 
             if ($loginForm->validate() && $loginForm->login()) {
                 $response->redirect('/');
-                return;
             }
         }
         return $this->renderView('login', [
@@ -44,7 +43,7 @@ class AuthController extends Controller
         if ($request->isPost()) {
             $user->loadData($request->getBody());
 
-            if ($user->validate() && $user->save()) {
+            if ($user->validate() && $user->save_user()) {
                 Application::$app->session->setFlash('success', 'Регистрация прошла успешно');
                 Application::$app->response->redirect('/');
             }

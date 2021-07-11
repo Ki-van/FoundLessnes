@@ -20,14 +20,12 @@ class m0001_initial
             (
                 id serial NOT NULL,
                 username character varying(255) NOT NULL,
-                email character varying(255) NOT NULL,
+                email character varying(255) unique NOT NULL,
                 password character varying(512) NOT NULL,
                 created_at timestamp(0) without time zone NOT NULL default LOCALTIMESTAMP(0),
                 role_id integer NOT NULL REFERENCES public.role (id) ON DELETE RESTRICT,
                 PRIMARY KEY (id)
             );
-            
-           
 
             CREATE TABLE public.evaluable
             (

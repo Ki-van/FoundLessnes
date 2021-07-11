@@ -53,12 +53,13 @@ class Database
 
     public function createMigrationsTable()
     {
-        $this->pdo->exec("
+        $this->pdo->exec(/** @lang PostgreSQL */"
         CREATE TABLE IF NOT EXISTS migrations (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            migration VARCHAR(255),
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 
-        ) ENGINE=INNODB;
+            id smallserial NOT NULL,
+            migration character varying(255),
+            created_at timestamp(0) without time zone NOT NULL default LOCALTIMESTAMP(0),
+            PRIMARY KEY (id)
+        );
         ");
     }
 

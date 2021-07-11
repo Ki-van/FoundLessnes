@@ -25,9 +25,15 @@ abstract class DbModel extends Model
 
     abstract static public function tableName(): string;
 
+
     public static function prepare($sql)
     {
         return Application::$app->db->pdo->prepare($sql);
+    }
+
+    public static function exec($sql)
+    {
+        return Application::$app->db->pdo->exec($sql);
     }
 
     public function save(): bool

@@ -21,6 +21,8 @@ class SiteController extends Controller
     public function participation(Request $request)
     {
         $participationForm = new ParticipationForm();
+        if(!Application::isGuest())
+            $participationForm->email = Application::$app->user->{'email'};
         if ($request->isPost()) {
 
             $participationForm->loadData($request->getBody());

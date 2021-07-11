@@ -7,14 +7,14 @@ namespace app\core\middlewares;
 use app\core\Application;
 use app\core\exception\ForbiddenException;
 
-class AuthMiddleware extends BaseMiddleware
+class AuthenticationMiddleware extends BaseMiddleware
 {
     const GUEST = 1;
     const NOT_GUEST = 2;
 
 
     /**
-     * AuthMiddleware constructor.
+     * AuthenticationMiddleware constructor.
      * @param array $actions
      */
     public function __construct(int $restrictFor, array $actions = [], Callable $callback = null)

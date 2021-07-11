@@ -20,7 +20,7 @@ $this->title = 'Регистрация';
     <?php use app\core\form\Form;
 
     $form = Form::begin('', 'post'); ?>
-    <?php echo $form->field($model, 'name') ?>
+    <?php echo $form->field($model, 'username') ?>
     <?php echo $form->field($model, 'email') ?>
     <?php echo $form->field($model, 'password')->passwordField() ?>
     <?php echo $form->field($model, 'passwordConfirm')->passwordField() ?>

@@ -15,9 +15,11 @@ class AuthenticationMiddleware extends BaseMiddleware
 
     /**
      * AuthenticationMiddleware constructor.
+     * @param $restrictFor *const from AuthenticationMiddleware class
      * @param array $actions
+     * @param callable|null $callback
      */
-    public function __construct(int $restrictFor, array $actions = [], Callable $callback = null)
+    public function __construct($restrictFor, array $actions = [], Callable $callback = null)
     {
         $this->actions = $actions;
         $this->restrictFor = $restrictFor;

@@ -46,14 +46,21 @@ class User extends UserModel
         return true;
     }
 
-    public static function get_one_user(string $email, string $password): User
+    public static function get_one_user(string $email, string $password): ?User
     {
-        Application::$app->db->pdo->query('begin;');
-        DbModel::exec("select get_user('kirill.ivanin00@yandex.ru', 'kivan', 'user_curs');");
-        $stmt = Application::$app->db->pdo->query('fetch all in user_curs;');
-        $result = $stmt->fetchObject(static::class);
-        Application::$app->db->pdo->query('commit;');
-        return $result;
+        try {
+            Application::$app->db->pdo->query('begin;');
+            $stmt = DbModel::prepare(/** @lang PostgreSQL */ "select get_user(:email, :password, 'user_curs');");
+            $stmt->bindParam(':email', $email);
+            $stmt->bindParam(':password', $password);
+            $stmt->execute();
+            $fetchStmt = Application::$app->db->pdo->query('fetch all from user_curs');
+            $result = $fetchStmt->fetchObject(static::class);
+            Application::$app->db->pdo->query('close user_curs;');
+            return $result;
+        } catch (\PDOException $e) {
+            return null;
+        }
     }
 
     public function rules(): array

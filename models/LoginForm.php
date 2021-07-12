@@ -33,6 +33,8 @@ class LoginForm extends Model
         $user = User::get_one_user($this->email, $this->password);
 
         if (!$user) {
+            $this->addError('email', '');
+            $this->addError('password', 'Пароль или почта неправильные');
             return false;
         }
 

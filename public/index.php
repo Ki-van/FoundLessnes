@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use app\controllers\AdminConroller;
+use app\controllers\AdminController;
 use app\controllers\ArticlesController;
 use app\controllers\AuthController;
 use app\controllers\SiteController;
@@ -46,8 +46,8 @@ $app->router->get('/profile', [AuthController::class, 'profile']);
 $app->router->get('/articles', [ArticlesController::class, 'articles']);
 $app->router->get('/articles/{url}', [ArticlesController::class, 'articles']);
 
-$app->router->get('/admin', [AdminConroller::class, 'admin']);
-$app->router->post('/admin', [AdminConroller::class, 'admin']);
+$app->router->get('/admin', [AdminController::class, 'admin']);
+$app->router->post('/admin', [AdminController::class, 'admin']);
 
 $app->run();
 

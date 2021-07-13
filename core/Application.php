@@ -35,8 +35,7 @@ class Application
 
         $primaryValue = $this->session->get('user');
         if ($primaryValue) {
-            $primaryKey = $this->userClass::primaryKey();
-            $this->user = $this->userClass::findOne([$primaryKey => $primaryValue]);
+            $this->user = $this->userClass::get_user_by_id($primaryValue);
         } else {
             $this->user = null;
         }
@@ -56,7 +55,7 @@ class Application
     {
         try {
             echo $this->router->resolve();
-        } catch (PageNotFoundException $e){
+        } catch (PageNotFoundException $e) {
             $this->response->setStatusCode($e->getCode());
             echo $this->view->renderView('_404');
         } catch (Exception $e) {
@@ -71,10 +70,7 @@ class Application
     {
         $this->user = $user;
         $primaryKey = $user->primaryKey();
-        $primaryValue = $user->{$primaryKey};
-
-        $this->session->set('user', $primaryValue);
-
+        $this->session->set('user', $user->{$primaryKey});
         return true;
     }
 

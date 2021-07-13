@@ -46,13 +46,34 @@ class User extends UserModel
         return true;
     }
 
-    public static function get_one_user(string $email, string $password): ?User
+    public static function get_user(string $email, string $password): ?User
     {
         try {
+            if(Application::$app->db->pdo->inTransaction())
+                Application::$app->db->pdo->commit();
+
             Application::$app->db->pdo->query('begin;');
             $stmt = DbModel::prepare(/** @lang PostgreSQL */ "select get_user(:email, :password, 'user_curs');");
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':password', $password);
+            $stmt->execute();
+            $fetchStmt = Application::$app->db->pdo->query('fetch all from user_curs');
+            $result = $fetchStmt->fetchObject(static::class);
+            Application::$app->db->pdo->query('close user_curs;');
+            Application::$app->db->pdo->commit();
+            return $result;
+        } catch (\PDOException $e) {
+            Application::$app->db->pdo->query('rollback;');
+            return null;
+        }
+    }
+
+    public static function get_user_by_id(int $id): ?User
+    {
+        try {
+            Application::$app->db->pdo->query('begin;');
+            $stmt = DbModel::prepare(/** @lang PostgreSQL */ "select get_user_by_id(:id, 'user_curs');");
+            $stmt->bindParam(':id', $id);
             $stmt->execute();
             $fetchStmt = Application::$app->db->pdo->query('fetch all from user_curs');
             $result = $fetchStmt->fetchObject(static::class);

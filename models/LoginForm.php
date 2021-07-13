@@ -30,7 +30,7 @@ class LoginForm extends Model
 
     public function login()
     {
-        $user = User::get_one_user($this->email, $this->password);
+        $user = User::get_user($this->email, $this->password);
 
         if (!$user) {
             $this->addError('email', '');

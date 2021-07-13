@@ -16,7 +16,7 @@ use app\core\View;
 
     <link href="/css/stylesheet.css" rel="stylesheet" type="text/css">
     <title><?php echo $this->title ?></title>
-    <link rel="shortcut icon" href="../images/cross.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/images/cross.ico" type="image/x-icon">
 
 </head>
 <body>

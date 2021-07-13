@@ -8,6 +8,10 @@ abstract class DbModel extends Model
 {
     abstract static public function primaryKey(): string;
 
+    abstract static public function tableName(): string;
+
+    abstract public function attributes(): array;
+
     public static function findOne(array $where)
     {
         $tableName = static::tableName();
@@ -22,9 +26,6 @@ abstract class DbModel extends Model
 
         return $statement->fetchObject(static::class);
     }
-
-    abstract static public function tableName(): string;
-
 
     public static function prepare($sql)
     {
@@ -52,6 +53,4 @@ abstract class DbModel extends Model
         $statement->execute();
         return true;
     }
-
-    abstract public function attributes(): array;
 }

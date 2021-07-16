@@ -27,6 +27,7 @@ class User extends UserModel
     public string $user_status = '';
     public string $password = '';
     public string $passwordConfirm = '';
+    public string $api_key = '';
 
     public static function tableName(): string
     {

@@ -71,6 +71,9 @@ class Application
         $this->user = $user;
         $primaryKey = $user->primaryKey();
         $this->session->set('user', $user->{$primaryKey});
+
+        if(!$_COOKIE['api_key'])
+            setcookie('api_key', $this->user->api_key, );
         return true;
     }
 

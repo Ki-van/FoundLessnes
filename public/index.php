@@ -30,8 +30,9 @@ $app = new Application(dirname(__DIR__), $config);
 
 $app->router->get('/', [SiteController::class, 'home']);
 
+/*
 $app->router->get('/participation', [SiteController::class, 'participation']);
-$app->router->post('/participation', [SiteController::class, 'participation']);
+$app->router->post('/participation', [SiteController::class, 'participation']);*/
 
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);

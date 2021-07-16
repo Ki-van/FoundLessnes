@@ -15,9 +15,7 @@ abstract class Model
     public const RULE_MIN = 'min';
     public const RULE_MATCH = 'match';
     public const RULE_UNIQUE = 'unique';
-    public const RULE_FILE = 'file';
-    public const RULE_FILE_ACCEPT = 'file_accept';
-    public const RULE_FILE_SIZE = 'file_size'; //bytes
+    public const RULE_MODEL = 'model';
 
 
     public array $errors = [];
@@ -39,7 +37,7 @@ abstract class Model
             $this->{$key} = [];
             if (is_array($value)) {
                 $fileFields = [];
-                for ($i = 0; $i < UploadedFile::filesCount($value); $i++) {
+                for ($i = 0; $i < sizeof($_FILES['name']); $i++) {
                     foreach ($value as $fileField => $files) {
                         $fileFields[$fileField] = $files[$i];
                     }
@@ -62,6 +60,7 @@ abstract class Model
 
                 if ($ruleName === self::RULE_REQUIRED && !$value) {
                     $this->addErrorForRule($attribute, self::RULE_REQUIRED);
+                    break;
                 }
 
                 if ($ruleName === self::RULE_EMAIL && !filter_var($value, FILTER_VALIDATE_EMAIL)) {
@@ -93,21 +92,14 @@ abstract class Model
                     }
                 }
 
-                if ($ruleName === self::RULE_FILE) {
-                    foreach ($value as $file) {
+                if ($ruleName === self::RULE_MODEL) {
+                    if (is_array($value)) {
                         /**
-                         * @var $file UploadedFile
+                         * @var $model Model
                          */
-                        if ($file->error != UPLOAD_ERR_OK) {
-                            $this->addErrorForRule($attribute, self::RULE_FILE, ['file_error' => $file->getErrorMessage()]);
-                            continue;
-                        }
-
-                        if (!in_array($file->type, explode(',', $rule[self::RULE_FILE_ACCEPT]))) {
-                            $this->addErrorForRule($attribute, self::RULE_FILE_ACCEPT, ['name' => $file->name]);
-                        }
-                        if ($file->size > $rule[self::RULE_FILE_SIZE]) {
-                            $this->addErrorForRule($attribute, self::RULE_FILE_SIZE, ['name' => $file->name, 'file_size' => $file->size / 1000000]);
+                        foreach ($value as $model) {
+                            $model->validate();
+                            $this->addErrorsForModel($attribute, $model->errors);
                         }
                     }
                 }
@@ -120,7 +112,7 @@ abstract class Model
 
     abstract public function rules(): array;
 
-    private function addErrorForRule(string $attribute, string $rule, array $params = [])
+    protected function addErrorForRule(string $attribute, string $rule, array $params = [])
     {
 
         $message = $this->errorMessages()[$rule];
@@ -131,7 +123,7 @@ abstract class Model
         $this->errors[$attribute][] = $message;
     }
 
-    private function errorMessages(): array
+    protected function errorMessages(): array
     {
         return [
             self::RULE_REQUIRED => '* Поле не должно быть пустым',
@@ -140,9 +132,6 @@ abstract class Model
             self::RULE_MAX => '* Максимальный размер этого поля {max}',
             self::RULE_EMAIL => '* Email неправильный',
             self::RULE_UNIQUE => '* Запись со значением в поле {field} уже есть',
-            self::RULE_FILE => '{file_error}',
-            self::RULE_FILE_ACCEPT => '* Файл {name} недопустимого типа',
-            self::RULE_FILE_SIZE => '* Файл {name} больше {file_size} Мб'
         ];
     }
 
@@ -154,6 +143,11 @@ abstract class Model
     public function labels(): array
     {
         return [];
+    }
+
+    public function addErrorsForModel(string $attribute, array $errors)
+    {
+        $this->errors[$attribute] = $errors;
     }
 
     public function addError(string $attribute, string $message)
@@ -168,6 +162,6 @@ abstract class Model
 
     public function getFirstError($attribute)
     {
-        return $this->errors[$attribute][0] ?? false;
+        return  $this->errors[$attribute][0] ?? false;
     }
 }

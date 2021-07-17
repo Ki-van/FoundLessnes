@@ -56,10 +56,44 @@ class Request
 
         return $body;
     }
-
-    public function containsFile(): bool
+    public function getFile(int $i, string $userfile): array|null
     {
-        return !empty($_FILES);
+        $fileFields = [];
+        if ($this->containsFile($userfile)) {
+            foreach ($_FILES[$userfile] as $key => $value) {
+                if (is_array($value))
+                    if (array_key_exists($i, $value))
+                        $fileFields[$key] = $value[$i];
+                    else return null;
+                else
+                    $fileFields[$key] = $value;
+            }
+        } else
+            return null;
+
+        return $fileFields;
+    }
+
+    public function getFirstFile(string $userfile)
+    {
+        return $this->getFile(0, $userfile);
+    }
+
+
+
+    public function containsFile($userfile): bool
+    {
+        return !empty($_FILES[$userfile]);
+    }
+
+    public function getCookie(string $cookieName)
+    {
+        return $_COOKIE[$cookieName] ?? null;
+    }
+
+    public function getHeader(string $headerName)
+    {
+        return getallheaders()[$headerName];
     }
 
 }

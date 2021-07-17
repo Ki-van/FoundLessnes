@@ -3,7 +3,6 @@
 namespace app\core;
 
 use app\core\exception\PageNotFoundException;
-use app\models\User;
 use Exception;
 
 class Application
@@ -37,7 +36,11 @@ class Application
         if ($primaryValue) {
             $this->user = $this->userClass::get_user_by_id($primaryValue);
         } else {
-            $this->user = null;
+            $apiKey = $this->request->getHeader('x-api-key');
+            if($apiKey)
+                $this->user = $this->userClass::get_user_by_api_key($apiKey);
+            else
+                $this->user = null;
         }
     }
 

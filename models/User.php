@@ -6,7 +6,6 @@ namespace app\models;
 
 use app\core\Application;
 use app\core\DbModel;
-use app\core\Model;
 use app\core\UserModel;
 
 class User extends UserModel
@@ -63,7 +62,7 @@ class User extends UserModel
             Application::$app->db->pdo->query('close user_curs;');
             Application::$app->db->pdo->commit();
             return $result;
-        } catch (\PDOException $e) {
+        } catch (\PDOException) {
             Application::$app->db->pdo->query('rollback;');
             return null;
         }
@@ -80,10 +79,18 @@ class User extends UserModel
             $result = $fetchStmt->fetchObject(static::class);
             Application::$app->db->pdo->query('close user_curs;');
             return $result;
-        } catch (\PDOException $e) {
+        } catch (\PDOException) {
             return null;
         }
     }
+
+    public static function get_user_by_api_key(string $apiKey): User|null
+    {
+         return DbModel::exec_procedure_cursor('get_user_by_api_key', [
+             'api_key' => $apiKey,
+         ], static::class);
+    }
+
 
     public function rules(): array
     {

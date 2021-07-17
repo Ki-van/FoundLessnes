@@ -17,4 +17,12 @@ class Response
         header('Location: '.$url);
         exit();
     }
+
+    public function sendJson(array $message)
+    {
+        $this->setStatusCode(200);
+        header('Content-Type: application/json');
+        echo json_encode($message);
+        exit();
+    }
 }

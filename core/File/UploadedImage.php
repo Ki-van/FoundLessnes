@@ -11,9 +11,9 @@ class UploadedImage extends UploadedFile
     {
         return
             [
-                self::RULE_FILE_ACCEPT =>
+                parent::RULE_FILE_ACCEPT =>
                     'image/jpeg,image/pjpeg,image/png',
-                self::RULE_FILE_SIZE => 1000000
+                parent::RULE_FILE_SIZE => 1000000
             ];
     }
 }

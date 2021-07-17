@@ -16,7 +16,7 @@ class UploadedFile extends Model
     public string $tmp_name;
     public string $type;
     public int $size;
-    private int $error;
+    public int $error;
 
     /**
      * UploadedFile constructor.
@@ -29,7 +29,6 @@ class UploadedFile extends Model
                 $this->{$key} = $value;
         }
     }
-
 
     public function move(string $directory, string $name = null)
     {
@@ -45,44 +44,27 @@ class UploadedFile extends Model
 
     public function validate(): bool
     {
-        foreach ($this->rules() as $attribute => $rules) {
-            $value = $this->{$attribute};
+        foreach ($this->rules() as $ruleName => $rule) {
 
-            foreach ($rules as $rule) {
-                $ruleName = $rule;
-                if (!is_string($ruleName))
-                    $ruleName = $rule[0];
+            if ($this->error != UPLOAD_ERR_OK) {
+                $this->addErrorForRule('name', self::RULE_FILE, ['file_error' => $this->errorCodeToMessage($this->error)]);
+                break;
+            }
 
-                /**
-                 * @var $value UploadedFile
-                 */
-                if ($value->error != UPLOAD_ERR_OK) {
-                    $this->addErrorForRule($attribute, self::RULE_FILE, ['file_error' => $value->errorCodeToMessage($this->error)]);
-                    continue;
-                }
-
-                if ($ruleName === self::RULE_FILE_ACCEPT && !in_array($value->type, explode(',', $rule[self::RULE_FILE_ACCEPT]))) {
-                    $this->addErrorForRule($attribute, self::RULE_FILE_ACCEPT, ['name' => $value->name]);
-                }
-                if ($value->size > $rule[self::RULE_FILE_SIZE]) {
-                    $this->addErrorForRule($attribute, self::RULE_FILE_SIZE, ['name' => $value->name, 'file_size' => $value->size / 1000000]);
-                }
+            if ($ruleName === self::RULE_FILE_ACCEPT && !in_array($this->type, explode(',', $rule))) {
+                $this->addErrorForRule('type', self::RULE_FILE_ACCEPT, ['name' => $this->name]);
+            }
+            if ($ruleName === self::RULE_FILE_SIZE && $this->size > $rule) {
+                $this->addErrorForRule('size', self::RULE_FILE_SIZE, ['name' => $this->name, 'file_size' => $this->size / 1000000]);
             }
         }
+
+        return empty($this->errors);
     }
 
     function rules(): array
     {
         return [];
-    }
-
-    protected function errorMessages(): array
-    {
-        return [
-            self::RULE_FILE => '{file_error}',
-            self::RULE_FILE_ACCEPT => '* Файл {name} недопустимого типа',
-            self::RULE_FILE_SIZE => '* Файл {name} больше {file_size} Мб'
-        ];
     }
 
     protected function errorCodeToMessage($code): string
@@ -109,5 +91,14 @@ class UploadedFile extends Model
                 break;
         }
         return $message;
+    }
+
+    protected function errorMessages(): array
+    {
+        return [
+            self::RULE_FILE => '{file_error}',
+            self::RULE_FILE_ACCEPT => '* Файл {name} недопустимого типа',
+            self::RULE_FILE_SIZE => '* Файл {name} больше {file_size} Мб'
+        ];
     }
 }

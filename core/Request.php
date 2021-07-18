@@ -56,6 +56,12 @@ class Request
 
         return $body;
     }
+
+    public function getJsonData()
+    {
+        return json_decode(file_get_contents("php://input"));
+    }
+
     public function getFile(int $i, string $userfile): array|null
     {
         $fileFields = [];
@@ -80,7 +86,6 @@ class Request
     }
 
 
-
     public function containsFile($userfile): bool
     {
         return !empty($_FILES[$userfile]);
@@ -93,7 +98,17 @@ class Request
 
     public function getHeader(string $headerName)
     {
-        return getallheaders()[$headerName];
+        return $this->getHeaders()[$headerName] ?? null;
     }
 
+    private function getHeaders(): array
+    {
+        $headers = [];
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+            }
+        }
+        return $headers;
+    }
 }

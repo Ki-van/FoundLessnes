@@ -6,7 +6,8 @@ namespace app\models;
 
 use app\core\DbModel;
 
-class Article extends DbModel
+class
+Article extends DbModel
 {
     const STATUS_CODE_PUBLISHED = 1;
     const STATUS_CODE_MODERATION = 2;

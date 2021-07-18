@@ -55,7 +55,8 @@ class UploadedFile extends Model
                 $this->addErrorForRule('type', self::RULE_FILE_ACCEPT, ['name' => $this->name]);
             }
             if ($ruleName === self::RULE_FILE_SIZE && $this->size > $rule) {
-                $this->addErrorForRule('size', self::RULE_FILE_SIZE, ['name' => $this->name, 'file_size' => $this->size / 1000000]);
+                $this->addErrorForRule('size', self::RULE_FILE_SIZE,
+                    ['name' => $this->name, 'file_size' => round($this->size / 1000000)]);
             }
         }
 

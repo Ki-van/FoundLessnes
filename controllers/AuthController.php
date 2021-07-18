@@ -9,6 +9,7 @@ use app\core\Controller;
 use app\core\middlewares\AuthenticationMiddleware;
 use app\core\Request;
 use app\core\Response;
+use app\core\UserDescriptor;
 use app\models\LoginForm;
 use app\models\User;
 
@@ -16,8 +17,8 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->registerMiddleware(new AuthenticationMiddleware(AuthenticationMiddleware::GUEST, ['profile']));
-        $this->registerMiddleware(new AuthenticationMiddleware(AuthenticationMiddleware::NOT_GUEST,
+        $this->registerMiddleware(new AuthenticationMiddleware(UserDescriptor::GUEST, ['profile']));
+        $this->registerMiddleware(new AuthenticationMiddleware(UserDescriptor::NOT_GUEST,
             ['login', 'register'],
             fn() => Application::$app->response->redirect('/profile')));
     }

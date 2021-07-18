@@ -2,6 +2,7 @@
 require_once __DIR__ . "/../vendor/autoload.php";
 
 use app\controllers\AdminController;
+use app\controllers\ApiController;
 use app\controllers\ArticlesController;
 use app\controllers\AuthController;
 use app\controllers\SiteController;
@@ -50,8 +51,10 @@ $app->router->get('/articles/{url}', [ArticlesController::class, 'articles']);
 $app->router->get('/admin', [AdminController::class, 'admin']);
 $app->router->post('/admin', [AdminController::class, 'admin']);
 
-$app->router->post('/api/uploadByFile', [ApiController::class, 'uploadByFile']);
+$app->router->post('/api/uploadFile', [ApiController::class, 'uploadFile']);
 $app->router->post('/api/uploadByUrl', [ApiController::class, 'uploadByUrl']);
+
+$app->router->post('/api/article', [ApiController::class, 'article']);
 
 
 

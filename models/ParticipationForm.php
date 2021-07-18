@@ -5,6 +5,7 @@ namespace app\models;
 
 
 use app\core\file\UploadedFile;
+use app\core\file\UploadedText;
 use app\core\Model;
 
 class ParticipationForm extends Model
@@ -22,14 +23,8 @@ class ParticipationForm extends Model
             'email' => [self::RULE_REQUIRED, self::RULE_EMAIL],
             'files' => [
                 self::RULE_REQUIRED,
-                [
-                    self::RULE_FILE,
-                    self::RULE_FILE_ACCEPT =>
-                        'text/plain,application/msword,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/rtf',
-                    self::RULE_FILE_SIZE => 2000000
-                ]
+                self::RULE_MODEL
             ]
-
         ];
     }
 

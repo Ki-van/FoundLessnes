@@ -32,6 +32,7 @@ class Application
         $this->session = new Session();
         $this->view = new View();
 
+
         $primaryValue = $this->session->get('user');
         if ($primaryValue) {
             $this->user = $this->userClass::get_user_by_id($primaryValue);

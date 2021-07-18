@@ -32,9 +32,35 @@ abstract class DbModel extends Model
         return Application::$app->db->pdo->prepare($sql);
     }
 
-    public static function exec($sql)
+    /**
+     * @param string $proc_name procedure name
+     * @param array $arguments arguments, exclude the cursor name
+     * @param string $object object class, that must be returned
+     * @return mixed /returns object from cursors first record
+     */
+    public static function exec_procedure_cursor(string $proc_name, array $arguments, string $object): mixed
     {
-        return Application::$app->db->pdo->exec($sql);
+        $arguments['cursor'] = 'cursor';
+        try {
+            if (Application::$app->db->pdo->inTransaction())
+                static::commit();
+            Application::$app->db->pdo->beginTransaction();
+            $stmt = static::prepare(/** @lang PostgreSQL */ "select $proc_name("
+                . implode(', ', array_map(fn($arg) => ":$arg", array_keys($arguments)))
+                . ")");
+            foreach ($arguments as $key => $argument) {
+                $stmt->bindParam(":$key", $argument);
+            }
+            $stmt->execute();
+            $fetchStmt = Application::$app->db->pdo->query("fetch all from ".$arguments['cursor']);
+            $result = $fetchStmt->fetchObject($object);
+            Application::$app->db->pdo->query('close '.$arguments['cursor']);
+            static::commit();
+            return $result;
+        } catch (\PDOException $e) {
+            static::rollBack();
+            return null;
+        }
     }
 
     public function save(): bool
@@ -52,5 +78,15 @@ abstract class DbModel extends Model
 
         $statement->execute();
         return true;
+    }
+
+    public static function commit()
+    {
+        return Application::$app->db->pdo->commit();
+    }
+
+    public static function rollBack()
+    {
+        return Application::$app->db->pdo->rollBack();
     }
 }

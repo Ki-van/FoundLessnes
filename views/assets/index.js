@@ -22,26 +22,50 @@ const editor = new EditorJS({
             }
         }
     },
+
+    data: {
+        "blocks": [
+            {
+                "type": "header",
+                "data": {
+                    "text": "Заголовок",
+                    "level": 2
+                }
+            },
+            {
+                "type": "paragraph",
+                "data": {
+                    "text": "Содержание публикации"
+                }
+            }
+        ],
+    },
 });
-document.getElementById('article_save').onclick = function (ev) {
 
-    editor.save().then((outputData) => {
 
-        if(outputData?.blocks?[0]?['type'] === 'header' && )
-
-        let xmlHttp = new XMLHttpRequest();
-        xmlHttp.open('post','/api/article', true);
-        xmlHttp.setRequestHeader("Content-Type", "application/json");
-        xmlHttp.send(JSON.stringify(outputData));
-    })
+window.onbeforeunload = save_progress;
+document.getElementById("to_meta_stage").onclick = function () {
+    document.querySelector(".editing_stage").setAttribute("hidden", true);
+    document.querySelector(".meta_stage").removeAttribute("hidden");
 };
 
-/**
- *
- * @param data
- */
+document.getElementById("to_editing_stage").onclick = function () {
+    document.querySelector(".meta_stage").setAttribute("hidden", true);
+    document.querySelector(".editing_stage").removeAttribute("hidden");
+};
 
-function firstBlock(data){
-    return
+
+function save_progress(ev) {
+    //TODO: Validate article
+    editor.save().then((outputData) => {
+        let xmlHttp = new XMLHttpRequest();
+        xmlHttp.open('post', '/api/article', true);
+        xmlHttp.setRequestHeader("Content-Type", "application/json");
+        xmlHttp.send(JSON.stringify(
+            {
+                article_status: 'creating',
+                article: outputData
+            }));
+    })
 }
 

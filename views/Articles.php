@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var $this \app\core\View
  */
@@ -6,8 +7,8 @@
 $this->title = 'Статьи';
 ?>
 
-<div class="art-post-body">
-    <div class="art-post-body">
+<div class="block">
+    <div class="block">
         <h2 class="art-post-header">
             <img src="/images/cross.png" alt="CROSS" width="22" height="32">
             <a href="#">

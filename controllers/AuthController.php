@@ -17,7 +17,6 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->registerMiddleware(new AuthenticationMiddleware(UserDescriptor::GUEST, ['profile']));
         $this->registerMiddleware(new AuthenticationMiddleware(UserDescriptor::NOT_GUEST,
             ['login', 'register'],
             fn() => Application::$app->response->redirect('/profile')));
@@ -59,10 +58,5 @@ class AuthController extends Controller
     {
         Application::$app->logout();
         $response->redirect('/');
-    }
-
-    public function profile(Request $request)
-    {
-        return $this->renderView('profile');
-    }
+    }               
 }

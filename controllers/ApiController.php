@@ -22,8 +22,10 @@ class ApiController extends Controller
         $this->registerMiddleware(
             new AuthenticationMiddleware(
                 UserDescriptor::GUEST,
-                ['uploadFile', 'uploadByUrl'],
-                fn() => Application::$app->response->sendJson(['success' => 0,])));
+                ['uploadFile', 'uploadByUrl', 'save', 'article'],
+                fn () => Application::$app->response->sendJson(['success' => 0,])
+            )
+        );
     }
 
     public function uploadFile(Request $request, Response $response)
@@ -32,7 +34,7 @@ class ApiController extends Controller
             $uploadedImage = new UploadedImage($request->getFirstFile('image'));
             if ($uploadedImage->validate()) {
 
-                $filename = 'i_'.uniqid(time()) . '.' . pathinfo($uploadedImage->name, PATHINFO_EXTENSION);
+                $filename = 'i_' . uniqid(time()) . '.' . pathinfo($uploadedImage->name, PATHINFO_EXTENSION);
                 $uploadedImage->move('images\\article', $filename);
                 $response->sendJson(
                     [
@@ -43,8 +45,7 @@ class ApiController extends Controller
                     ]
                 );
             } else
-            throw  new \Exception();
-
+                throw  new \Exception();
         } catch (\Exception $e) {
             $response->sendJson(['success' => 0]);
         }
@@ -52,11 +53,11 @@ class ApiController extends Controller
 
     public function uploadByUrl(Request $request, Response $response)
     {
-
     }
 
     public function article(Request $request, Response $response)
     {
-        $article = 123;
+        //TODO: validation
+
     }
 }

@@ -5,6 +5,7 @@ use app\controllers\AdminController;
 use app\controllers\ApiController;
 use app\controllers\ArticlesController;
 use app\controllers\AuthController;
+use app\controllers\ProfileController;
 use app\controllers\SiteController;
 use app\core\Application;
 
@@ -43,7 +44,9 @@ $app->router->post('/register', [AuthController::class, 'register']);
 
 $app->router->get('/logout', [AuthController::class, 'logout']);
 
-$app->router->get('/profile', [AuthController::class, 'profile']);
+$app->router->get('/profile', [ProfileController::class, 'profile']);
+$app->router->get('/profile/sandbox', [ProfileController::class, 'sandbox']);
+
 
 $app->router->get('/articles', [ArticlesController::class, 'articles']);
 $app->router->get('/articles/{url}', [ArticlesController::class, 'articles']);

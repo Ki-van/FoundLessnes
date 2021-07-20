@@ -1,12 +1,13 @@
 <?php
+
 /**
  * @var $this \app\core\View
  */
 
-    $this->title = 'Главная';
+$this->title = 'Главная';
 ?>
 
-<div class="art-post-body">
+<div class="block">
     <h2 class="art-post-header">
         <img src="../images/cross.png" alt="CROSS" width="22" height="32">
         <a href="#">
@@ -28,7 +29,7 @@
         </p>
     </div>
 </div>
-<div class="art-post-body">
+<div class="block">
     <h2 class="art-post-header">
         <img src="../images/cross.png" alt="CROSS" width="22" height="32">
         <a href="#">
@@ -51,7 +52,7 @@
         </p>
     </div>
 </div>
-<div class="art-post-body">
+<div class="block">
     <h2 class="art-post-header">
         <img src="../images/cross.png" alt="CROSS" width="22" height="32">
         <a href="#">
@@ -76,7 +77,7 @@
         </p>
     </div>
 </div>
-<div class="art-post-body">
+<div class="block">
     <h2 class="art-post-header">
         <img src="../images/cross.png" alt="CROSS" width="22" height="32">
         <a href="articles/psix_foundation.php">
@@ -97,7 +98,7 @@
         </p>
     </div>
 </div>
-<div class="art-post-body">
+<div class="block">
     <h2 class="art-post-header">
         <img src="../images/cross.png" alt="CROSS" width="22" height="32">
         <a href="#">
@@ -120,7 +121,7 @@
     </div>
 </div>
 
-<div class="art-post-body">
+<div class="block">
     <h2 class="art-post-header">
         <img src="../images/cross.png" alt="CROSS" width="22" height="32">
         <a href="#">
@@ -149,7 +150,7 @@
     </div>
 </div>
 
-<div class="art-post-body">
+<div class="block">
     <h2 class="art-post-header">
         <img src="../images/cross.png" alt="CROSS" width="22" height="32">
         <a href="#">

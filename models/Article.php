@@ -9,15 +9,16 @@ use app\core\DbModel;
 class
 Article extends DbModel
 {
-    const STATUS_CODE_PUBLISHED = 1;
-    const STATUS_CODE_MODERATION = 2;
+    const PUBLISHED = 1;
+    const MODERATION = 2;
+    const CREATING = 2;
+
 
 
     public int $id = 0;
     public string $heading = '';
     public string $description = '';
-    public string $url = '';
-    public int $status_code = self::STATUS_CODE_MODERATION;
+    public int $status_code = self::MODERATION;
     public ?int $author_id = 0;
     public  $created_at;
     public  $changed_at;
@@ -57,6 +58,4 @@ Article extends DbModel
     {
         return ['id', 'heading', 'description', 'url', 'author_id', 'status_code'];
     }
-
-
 }

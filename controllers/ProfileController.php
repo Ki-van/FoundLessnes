@@ -6,6 +6,8 @@ use app\core\Controller;
 use app\core\Request;
 use app\core\middlewares\AuthenticationMiddleware;
 use app\core\UserDescriptor;
+use app\models\Article;
+use app\core\Application;
 
 class ProfileController extends Controller
 {
@@ -19,8 +21,20 @@ class ProfileController extends Controller
         return $this->renderView('profile');
     }
 
-    public function sandbox()
+    public function sandbox(Request $request)
     {
-        return $this->renderView('sandbox');
+        $article = new Article();
+        if ($request->isPost()) {
+            if ($article->validate()) {
+                try {
+                    $article->save();
+                } catch (\Throwable $th) {
+                    //throw $th;
+                }
+            }
+        }
+        return $this->renderView('sandbox', [
+            'model' => $article
+        ]);
     }
 }

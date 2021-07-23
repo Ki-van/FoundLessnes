@@ -1,6 +1,6 @@
 <?php
 
-class m0005_remove_not_null_constr_article
+class m0006_make_evaluable_uuid
 {
     public function up()
     {

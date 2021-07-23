@@ -16,7 +16,7 @@ abstract class DbModel extends Model
     {
         $tableName = static::tableName();
         $attributes = array_keys($where);
-        $sql = implode('AND ', array_map(fn($attr) => "$attr = :$attr", $attributes));
+        $sql = implode('AND ', array_map(fn ($attr) => "$attr = :$attr", $attributes));
         $statement = self::prepare("SELECT * FROM $tableName WHERE $sql");
         foreach ($where as $key => $value) {
             $statement->bindValue(":$key", $value);
@@ -45,17 +45,45 @@ abstract class DbModel extends Model
             if (Application::$app->db->pdo->inTransaction())
                 static::commit();
             Application::$app->db->pdo->beginTransaction();
-            $stmt = static::prepare(/** @lang PostgreSQL */ "select $proc_name("
-                . implode(', ', array_map(fn($arg) => ":$arg", array_keys($arguments)))
+            $stmt = static::prepare(
+            /** @lang PostgreSQL */
+            "select $proc_name("
+                . implode(', ', array_map(fn ($arg) => ":$arg", array_keys($arguments)))
                 . ")");
             foreach ($arguments as $key => $argument) {
                 $stmt->bindParam(":$key", $argument);
             }
             $stmt->execute();
-            $fetchStmt = Application::$app->db->pdo->query("fetch all from ".$arguments['cursor']);
+            $fetchStmt = Application::$app->db->pdo->query("fetch all from " . $arguments['cursor']);
             $result = $fetchStmt->fetchObject($object);
-            Application::$app->db->pdo->query('close '.$arguments['cursor']);
+            Application::$app->db->pdo->query('close ' . $arguments['cursor']);
             static::commit();
+            return $result;
+        } catch (\PDOException $e) {
+            static::rollBack();
+            return null;
+        }
+    }
+
+    public static function exec_procedure(string $proc_name, array $arguments)
+    {
+        try {
+            if (Application::$app->db->pdo->inTransaction())
+                static::commit();
+            $stmt = static::prepare(
+                /** @lang PostgreSQL */
+                "call $proc_name("
+                    . implode(', ', array_map(fn ($arg) => ":$arg", array_keys($arguments)))
+                    . ")"
+            );
+            foreach ($arguments as $key => $argument) {
+                $stmt->bindParam(":$key", $argument);
+            }
+            $result = $stmt->execute();
+            if ($result)
+                static::commit();
+            else
+                static::rollBack();
             return $result;
         } catch (\PDOException $e) {
             static::rollBack();
@@ -67,7 +95,7 @@ abstract class DbModel extends Model
     {
         $tableName = $this->tableName();
         $attributes = $this->attributes();
-        $params = array_map(fn($attr) => ":" . $attr, $attributes);
+        $params = array_map(fn ($attr) => ":" . $attr, $attributes);
 
         $statement = self::prepare("INSERT INTO $tableName (" . implode(',', $attributes) . ")
             VALUES (" . implode(',', $params) . ")");

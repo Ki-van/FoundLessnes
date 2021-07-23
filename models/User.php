@@ -18,7 +18,7 @@ class User extends UserModel
     const ROLE_USER = 'user';
 
 
-    public int $id = -1;
+    public string $id = '';
     public string $username = '';
     public string $email = '';
     public string $created_at = '';
@@ -35,12 +35,14 @@ class User extends UserModel
 
     public function save_user(): bool
     {
-        $stmt = DbModel::prepare(/** @lang PostgreSQL */'call add_user(:username, :email, :password, :role, :id)');
+        $stmt = DbModel::prepare(
+        /** @lang PostgreSQL */
+        'call add_user(:username, :email, :password, :role, :id)');
         $stmt->bindParam(':username', $this->username);
         $stmt->bindParam(':email', $this->email);
         $stmt->bindParam(':password', $this->password);
         $stmt->bindValue(':role', self::ROLE_USER);
-        $stmt->bindParam(':id', $this->id, \PDO::PARAM_INT|\PDO::PARAM_INPUT_OUTPUT, 12);
+        $stmt->bindParam(':id', $this->id, \PDO::PARAM_INT | \PDO::PARAM_INPUT_OUTPUT, 12);
         $stmt->execute();
 
         return true;
@@ -49,11 +51,13 @@ class User extends UserModel
     public static function get_user(string $email, string $password): ?User
     {
         try {
-            if(Application::$app->db->pdo->inTransaction())
+            if (Application::$app->db->pdo->inTransaction())
                 Application::$app->db->pdo->commit();
 
             Application::$app->db->pdo->query('begin;');
-            $stmt = DbModel::prepare(/** @lang PostgreSQL */ "select get_user(:email, :password, 'user_curs');");
+            $stmt = DbModel::prepare(
+            /** @lang PostgreSQL */
+            "select get_user(:email, :password, 'user_curs');");
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':password', $password);
             $stmt->execute();
@@ -72,7 +76,9 @@ class User extends UserModel
     {
         try {
             Application::$app->db->pdo->query('begin;');
-            $stmt = DbModel::prepare(/** @lang PostgreSQL */ "select get_user_by_id(:id, 'user_curs');");
+            $stmt = DbModel::prepare(
+            /** @lang PostgreSQL */
+            "select get_user_by_id(:id, 'user_curs');");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             $fetchStmt = Application::$app->db->pdo->query('fetch all from user_curs');
@@ -86,9 +92,9 @@ class User extends UserModel
 
     public static function get_user_by_api_key(string $apiKey): User|null
     {
-         return DbModel::exec_procedure_cursor('get_user_by_api_key', [
-             'api_key' => $apiKey,
-         ], static::class);
+        return DbModel::exec_procedure_cursor('get_user_by_api_key', [
+            'api_key' => $apiKey,
+        ], static::class);
     }
 
 
@@ -126,6 +132,4 @@ class User extends UserModel
     {
         return $this->username;
     }
-
-
 }

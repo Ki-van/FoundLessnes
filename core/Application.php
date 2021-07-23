@@ -38,7 +38,7 @@ class Application
             $this->user = $this->userClass::get_user_by_id($primaryValue);
         } else {
             $apiKey = $this->request->getHeader('x-api-key');
-            if($apiKey)
+            if ($apiKey)
                 $this->user = $this->userClass::get_user_by_api_key($apiKey);
             else
                 $this->user = null;
@@ -76,8 +76,8 @@ class Application
         $primaryKey = $user->primaryKey();
         $this->session->set('user', $user->{$primaryKey});
 
-        if(!$_COOKIE['api_key'])
-            setcookie('api_key', $this->user->api_key, );
+        if (!$_COOKIE['api_key'])
+            setcookie('api_key', $this->user->api_key,);
         return true;
     }
 

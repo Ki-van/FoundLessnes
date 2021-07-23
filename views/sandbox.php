@@ -41,22 +41,22 @@ $this->title = 'Создание публикации';
             </a>
         </h2>
     </div>
-    <div class="block">
-        <?php
 
-        use app\core\form\Form;
-        use app\core\form\TextareaField;
+    <?php
 
-        $form = Form::begin('', 'post'); ?>
-        <?php echo $form->field($model, 'heading') ?>
-        <?php echo new TextareaField($model, 'description'); ?>
-        <?php ?>
+    use app\core\form\Form;
+    use app\core\form\TextareaField;
 
-        <div class="form-group">
-            <button class="btn" id="send">Отправить на модерацию</button>
-        </div>
-        <?php Form::end() ?>
+    $form = Form::begin('', 'post'); ?>
+    <?php echo $form->field($model, 'heading') ?>
+    <?php echo new TextareaField($model, 'description'); ?>
+    <?php ?>
+
+    <div class="form-group">
+        <button class="btn" id="send">Отправить на модерацию</button>
     </div>
+    <?php Form::end() ?>
+
     <button class="btn" id="to_editing_stage">Назад к публикации</button>
 </div>
 

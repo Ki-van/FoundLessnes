@@ -101,7 +101,6 @@ use app\core\View;
     <footer>
 
     </footer>
-    <script src="../assets/eventHandlers.js"></script>
 </body>
 
 </html>

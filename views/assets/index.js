@@ -22,6 +22,7 @@ const editor = new EditorJS({
             }
         }
     },
+    autofocus: true,
 
     data: {
         "blocks": [
@@ -43,13 +44,20 @@ const editor = new EditorJS({
 });
 
 
-window.onbeforeunload = save_progress;
+window.addEventListener("beforeunload", function (e) {
+    save_progress();
+    e.returnValue = null;
+    return null;
+});
+
+
 document.getElementById("to_meta_stage").onclick = function () {
     document.querySelector(".editing_stage").setAttribute("hidden", true);
     document.querySelector(".meta_stage").removeAttribute("hidden");
 };
 
 document.getElementById("to_editing_stage").onclick = function () {
+    document.querySelector("input[name='heading']").value = editor.blocks.getBlockByIndex(0);
     document.querySelector(".meta_stage").setAttribute("hidden", true);
     document.querySelector(".editing_stage").removeAttribute("hidden");
 };
@@ -60,7 +68,7 @@ function save_progress(ev) {
     editor.save().then((outputData) => {
         let xmlHttp = new XMLHttpRequest();
         xmlHttp.open('post', '/api/article', true);
-        xmlHttp.setRequestHeader("Content-Type", "application/json");
+        xmlHttp.setRequestHeader("Content-Type", "application/json charset=utf-8");
         xmlHttp.send(JSON.stringify(
             {
                 article_status: 'creating',

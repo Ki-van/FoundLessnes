@@ -58,6 +58,15 @@ class ApiController extends Controller
     public function article(Request $request, Response $response)
     {
         //TODO: validation
+        $article = new Article();
+        $article->body = json_encode($request->getJsonData()->article);
+        $article->author_id = Application::$app->user->id;
 
+
+        //$article->saveCreating();
+        //Application::$app->db->pdo->setAttribute(\PDO::ATTR_AUTOCOMMIT, )
+        $result = Application::$app->db->pdo->exec("call add_article(38, 'body mfk' )");
+
+        $response->sendJson(['success']);
     }
 }

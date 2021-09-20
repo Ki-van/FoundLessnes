@@ -27,14 +27,9 @@ abstract class DbModel extends Model
         return $statement->fetchObject(static::class);
     }
 
-    public static function prepare($sql)
-    {
-        return Application::$app->db->pdo->prepare($sql);
-    }
-
     /**
      * @param string $proc_name procedure name
-     * @param array $arguments arguments, exclude the cursor name
+     * @param array $arguments arguments, exclude the cursor name, numeric keys, corresponding to arguments order
      * @param string $object object class, that must be returned
      * @return mixed /returns object from cursors first record
      */
@@ -42,9 +37,6 @@ abstract class DbModel extends Model
     {
         $arguments['cursor'] = 'cursor';
         try {
-            if (Application::$app->db->pdo->inTransaction())
-                static::commit();
-            Application::$app->db->pdo->beginTransaction();
             $stmt = static::prepare(
             /** @lang PostgreSQL */
             "select $proc_name("
@@ -65,56 +57,30 @@ abstract class DbModel extends Model
         }
     }
 
-    public static function exec_procedure(string $proc_name, array $arguments)
+    public static function exec_procedure(string $proc_name, array $arguments): bool
     {
-        try {
-            if (Application::$app->db->pdo->inTransaction())
-                static::commit();
-            $stmt = static::prepare(
-                /** @lang PostgreSQL */
-                "call $proc_name("
-                    . implode(', ', array_map(fn ($arg) => ":$arg", array_keys($arguments)))
-                    . ")"
-            );
-            foreach ($arguments as $key => $argument) {
-                $stmt->bindParam(":$key", $argument);
-            }
-            $result = $stmt->execute();
-            if ($result)
-                static::commit();
-            else
-                static::rollBack();
-            return $result;
-        } catch (\PDOException $e) {
-            static::rollBack();
-            return null;
+        $alist = [];
+        for($i = 1; $i <= count($arguments); $i++) {
+            $alist[$i] = '$' . $i;
         }
+        $sql = "call $proc_name" . '(' . implode(',', $alist) . ')';
+
+        return pg_query_params(static::conn(), $sql, $arguments);
     }
 
-    public function save(): bool
+    public function save()
     {
-        $tableName = $this->tableName();
         $attributes = $this->attributes();
-        $params = array_map(fn ($attr) => ":" . $attr, $attributes);
-
-        $statement = self::prepare("INSERT INTO $tableName (" . implode(',', $attributes) . ")
-            VALUES (" . implode(',', $params) . ")");
-
+        $assoc_array = [];
         foreach ($attributes as $attribute) {
-            $statement->bindValue(":$attribute", $this->{$attribute});
+            $assoc_array[$attribute] = $this->{$attribute};
         }
 
-        $statement->execute();
-        return true;
+       return pg_insert($this->conn(), $this->tableName(), $assoc_array, PGSQL_DML_ESCAPE);
     }
 
-    public static function commit()
+    public static function conn()
     {
-        return Application::$app->db->pdo->commit();
-    }
-
-    public static function rollBack()
-    {
-        return Application::$app->db->pdo->rollBack();
+        return Application::$app->db->pgsql;
     }
 }

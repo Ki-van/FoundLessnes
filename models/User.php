@@ -50,40 +50,37 @@ class User extends UserModel
 
     public static function get_user(string $email, string $password): ?User
     {
+        $c = Application::$app->db->pgsql;
         try {
-            if (Application::$app->db->pdo->inTransaction())
-                Application::$app->db->pdo->commit();
-
-            Application::$app->db->pdo->query('begin;');
-            $stmt = DbModel::prepare(
+            pg_query($c, 'Begin;');
+            $status = pg_transaction_status($c);
+            pg_query_params($c,
             /** @lang PostgreSQL */
-            "select get_user(:email, :password, 'user_curs');");
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':password', $password);
-            $stmt->execute();
-            $fetchStmt = Application::$app->db->pdo->query('fetch all from user_curs');
-            $result = $fetchStmt->fetchObject(static::class);
-            Application::$app->db->pdo->query('close user_curs;');
-            Application::$app->db->pdo->commit();
+            "select get_user($1, $2, 'user_curs');", array($email, $password));
+            $cursor =  pg_query($c, 'fetch all from user_curs;');
+            pg_query($c, 'End;');
+            $status = pg_transaction_status($c);
+            $result = pg_fetch_object($cursor, null, static::class);
+
             return $result;
         } catch (\PDOException) {
-            Application::$app->db->pdo->query('rollback;');
+            pg_query(Application::$app->db->pgsql, 'close user_curs; rollback;');
             return null;
         }
     }
 
     public static function get_user_by_id(int $id): ?User
     {
+        $c = Application::$app->db->pgsql;
         try {
-            Application::$app->db->pdo->query('begin;');
-            $stmt = DbModel::prepare(
-            /** @lang PostgreSQL */
-            "select get_user_by_id(:id, 'user_curs');");
-            $stmt->bindParam(':id', $id);
-            $stmt->execute();
-            $fetchStmt = Application::$app->db->pdo->query('fetch all from user_curs');
-            $result = $fetchStmt->fetchObject(static::class);
-            Application::$app->db->pdo->query('close user_curs;');
+            pg_query($c, 'Begin;');
+            pg_query_params($c,
+                /** @lang PostgreSQL */
+                "select get_user_by_id($1, 'user_curs');", array($id));
+            $cursor =  pg_query($c, 'fetch all from user_curs;');
+            pg_query($c, 'End;');
+            $result = pg_fetch_object($cursor, null, static::class);
+
             return $result;
         } catch (\PDOException) {
             return null;
@@ -92,11 +89,8 @@ class User extends UserModel
 
     public static function get_user_by_api_key(string $apiKey): User|null
     {
-        return DbModel::exec_procedure_cursor('get_user_by_api_key', [
-            'api_key' => $apiKey,
-        ], static::class);
+        return DbModel::exec_procedure_cursor('get_user_by_api_key', [$apiKey], static::class);
     }
-
 
     public function rules(): array
     {

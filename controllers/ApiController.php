@@ -63,10 +63,10 @@ class ApiController extends Controller
         $article->author_id = Application::$app->user->id;
 
 
-        //$article->saveCreating();
-        //Application::$app->db->pdo->setAttribute(\PDO::ATTR_AUTOCOMMIT, )
-        $result = Application::$app->db->pdo->exec("call add_article(38, 'body mfk' )");
+        if($article->saveCreating()){
+            $response->sendJson(['success' => 1]);
+        } else
+            $response->sendJson(['success' => 0]);
 
-        $response->sendJson(['success']);
     }
 }

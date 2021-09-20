@@ -4,10 +4,14 @@
 namespace app\core;
 
 
+use mysql_xdevapi\Exception;
+
 class Database
 {
-    public ?\PDO $pdo;
-
+    /**
+     * @var false|resource
+     */
+    public $pgsql;
     /**
      * Database constructor.
      * @param array $config
@@ -18,8 +22,12 @@ class Database
         $dsn = $config['dsn'];
         $user = $config['user'];
         $password = $config['password'];
-        $this->pdo = new \PDO($dsn, $user, $password);
-        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $this->pgsql = pg_connect($dsn." user=".$user." password=".$password);
+
+        if(!$this->pgsql){
+            throw new Exception("Failed to connect to the postgres db");
+        }
+
     }
 
     public function applyMigrations()
@@ -53,7 +61,7 @@ class Database
 
     public function createMigrationsTable()
     {
-        $this->pdo->exec(/** @lang PostgreSQL */"
+        pg_query($this->pgsql, /** @lang PostgreSQL */"
         CREATE TABLE IF NOT EXISTS migrations (
             id smallserial NOT NULL,
             migration character varying(255),
@@ -65,7 +73,7 @@ class Database
 
     private function getAppliedMigrations(): array
     {
-        $statement = $this->pdo->prepare("SELECT migration FROM migrations");
+        $statement = $this->$pgsql->prepare("SELECT migration FROM migrations");
         $statement->execute();
 
         return $statement->fetchAll(\PDO::FETCH_COLUMN);
@@ -79,7 +87,7 @@ class Database
     private function saveMigrations(array $newMigrations)
     {
         $str = implode(',', array_map(fn($m) => "('$m')", $newMigrations));
-        $statement = $this->pdo->prepare("INSERT INTO migrations (migration) VALUES 
+        $statement = $this->$pgsql->prepare("INSERT INTO migrations (migration) VALUES 
             $str
             ");
         $statement->execute();
@@ -87,6 +95,6 @@ class Database
 
     public function __destruct()
     {
-        $this->pdo = null;
+        pg_close($this->pgsql);
     }
 }

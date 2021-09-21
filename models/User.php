@@ -7,6 +7,7 @@ namespace app\models;
 use app\core\Application;
 use app\core\DbModel;
 use app\core\UserModel;
+use MongoDB\Driver\Exception\AuthenticationException;
 
 class User extends UserModel
 {
@@ -33,43 +34,28 @@ class User extends UserModel
         return 'users';
     }
 
-    public function save_user(): bool
-    {
-        $stmt = DbModel::prepare(
-        /** @lang PostgreSQL */
-        'call add_user(:username, :email, :password, :role, :id)');
-        $stmt->bindParam(':username', $this->username);
-        $stmt->bindParam(':email', $this->email);
-        $stmt->bindParam(':password', $this->password);
-        $stmt->bindValue(':role', self::ROLE_USER);
-        $stmt->bindParam(':id', $this->id, \PDO::PARAM_INT | \PDO::PARAM_INPUT_OUTPUT, 12);
-        $stmt->execute();
-
-        return true;
-    }
-
-    public static function get_user(string $email, string $password): ?User
+    public static function get_user(string $email, string $password)
     {
         $c = Application::$app->db->pgsql;
         try {
             pg_query($c, 'Begin;');
-            $status = pg_transaction_status($c);
-            pg_query_params($c,
-            /** @lang PostgreSQL */
-            "select get_user($1, $2, 'user_curs');", array($email, $password));
-            $cursor =  pg_query($c, 'fetch all from user_curs;');
-            pg_query($c, 'End;');
-            $status = pg_transaction_status($c);
-            $result = pg_fetch_object($cursor, null, static::class);
-
-            return $result;
-        } catch (\PDOException) {
-            pg_query(Application::$app->db->pgsql, 'close user_curs; rollback;');
+            $isCorrect = pg_query_params($c,
+                /** @lang PostgreSQL */
+                "select get_user($1, $2, 'user_curs');", array($email, $password));
+            if ($isCorrect) {
+                $cursor = pg_query($c, 'fetch all from user_curs;');
+                pg_query($c, 'End;');
+                return pg_fetch_object($cursor, null, static::class);
+            }
+            else
+                throw new \Exception("Invalid password");
+        } catch (\Exception) {
+            pg_query(static::conn(), 'close user_curs; rollback;');
             return null;
         }
     }
 
-    public static function get_user_by_id(int $id): ?User
+    public static function get_user_by_id(int $id)
     {
         $c = Application::$app->db->pgsql;
         try {
@@ -77,7 +63,7 @@ class User extends UserModel
             pg_query_params($c,
                 /** @lang PostgreSQL */
                 "select get_user_by_id($1, 'user_curs');", array($id));
-            $cursor =  pg_query($c, 'fetch all from user_curs;');
+            $cursor = pg_query($c, 'fetch all from user_curs;');
             pg_query($c, 'End;');
             $result = pg_fetch_object($cursor, null, static::class);
 
@@ -90,6 +76,17 @@ class User extends UserModel
     public static function get_user_by_api_key(string $apiKey): User|null
     {
         return DbModel::exec_procedure_cursor('get_user_by_api_key', [$apiKey], static::class);
+    }
+
+    public static function primaryKey(): string
+    {
+        return 'id';
+    }
+
+    public function save_user(): bool
+    {
+        return pg_query_params(static::conn(), 'call add_user($1, $2, $3, $4, $5)',
+            array($this->username, $this->email, $this->password, self::ROLE_USER, $this->id));
     }
 
     public function rules(): array
@@ -115,11 +112,6 @@ class User extends UserModel
             'password' => 'Пароль',
             'passwordConfirm' => 'Подтвердите пароль'
         ];
-    }
-
-    public static function primaryKey(): string
-    {
-        return 'id';
     }
 
     public function getDisplayName(): string

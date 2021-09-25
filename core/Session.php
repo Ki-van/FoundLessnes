@@ -25,6 +25,10 @@ class Session
             'value' => $message
         ];
     }
+    public function resetFlash($key)
+    {
+        $_SESSION[self::FLASH_KEY][$key]['remove'] = false;
+    }
 
     public function getFlash($key)
     {

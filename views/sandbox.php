@@ -50,14 +50,16 @@ $this->title = 'Создание публикации';
     $form = Form::begin('', 'post'); ?>
     <?php echo $form->field($model, 'heading') ?>
     <?php echo new TextareaField($model, 'description'); ?>
-    <?php ?>
-
     <div class="form-group">
-        <button class="btn" id="send">Отправить на модерацию</button>
+        <button class="btn" id="sendModeration">Отправить на модерацию</button>
     </div>
     <?php Form::end() ?>
 
+
+
+
     <button class="btn" id="to_editing_stage">Назад к публикации</button>
+
 </div>
 
 <script src="/assets/scripts.js"></script>

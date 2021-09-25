@@ -12,14 +12,13 @@ class Article extends DbModel
     const MODERATION = 2;
     const CREATING = 3;
 
-
-
     public int $article_eval_id = 0;
     public string $heading = '';
     public string $description = '';
     public string $body = '';
     public string $author_id = '';
-    public int $stage_name = self::MODERATION;
+    public int $status_id;
+    public string $article_status;
     public  $created_at;
     public  $changed_at;
 
@@ -28,26 +27,17 @@ class Article extends DbModel
     {
     }
 
-
-    public function save(): bool
-    {
-
-        return true;
-    }
-
-    public function saveCreating()
-    {
-
-        return DbModel::exec_procedure('add_article', [
-            'author_id' => $this->author_id,
-            'body' => $this->body
-        ]);
-    }
-
     static public function primaryKey(): string
     {
         return 'article_eval_id';
     }
+
+    public function save()
+    {
+        return DbModel::exec_procedure('add_article',
+            array($this->author_id, $this->heading, $this->description, $this->body, $this->article_status));
+    }
+
 
     static public function tableName(): string
     {
@@ -61,7 +51,7 @@ class Article extends DbModel
 
     public function attributes(): array
     {
-        return ['article_eval_id', 'heading', 'description', 'body'];
+        return ['article_eval_id', 'heading', 'description', 'body', 'author_id', 'status_id'];
     }
 
     public function labels(): array

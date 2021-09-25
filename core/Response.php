@@ -18,11 +18,19 @@ class Response
         exit();
     }
 
-    public function sendJson(array $message)
+    #[NoReturn] public function sendJson(array $message)
     {
         $this->setStatusCode(200);
         header('Content-Type: application/json');
         echo json_encode($message);
+        exit();
+    }
+
+    #[NoReturn] public function sendText(string $message)
+    {
+        $this->setStatusCode(200);
+        header('Content-Type: text/html');
+        echo $message;
         exit();
     }
 }

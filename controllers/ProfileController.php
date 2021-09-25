@@ -26,11 +26,7 @@ class ProfileController extends Controller
         $article = new Article();
         if ($request->isPost()) {
             if ($article->validate()) {
-                try {
-                    $article->save();
-                } catch (\Throwable $th) {
-                    //throw $th;
-                }
+                $article->save();
             }
         }
         return $this->renderView('sandbox', [

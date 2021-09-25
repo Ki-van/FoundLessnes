@@ -467,3 +467,7 @@ form input[type="submit"]{
     color: green;
 }
 
+.alert-fail{
+    background-color: darkred;
+    color: red;
+}

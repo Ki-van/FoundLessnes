@@ -57,14 +57,13 @@ abstract class DbModel extends Model
         }
     }
 
-    public static function exec_procedure(string $proc_name, array $arguments): bool
+    public static function exec_procedure(string $proc_name, array $arguments)
     {
         $alist = [];
         for($i = 1; $i <= count($arguments); $i++) {
             $alist[$i] = '$' . $i;
         }
         $sql = "call $proc_name" . '(' . implode(',', $alist) . ')';
-
         return pg_query_params(static::conn(), $sql, $arguments);
     }
 
@@ -75,7 +74,6 @@ abstract class DbModel extends Model
         foreach ($attributes as $attribute) {
             $assoc_array[$attribute] = $this->{$attribute};
         }
-
        return pg_insert($this->conn(), $this->tableName(), $assoc_array, PGSQL_DML_ESCAPE);
     }
 

@@ -8,7 +8,6 @@ use app\core\Application;
 use app\core\Controller;
 use app\core\exception\ForbiddenException;
 use app\core\file\UploadedImage;
-use app\core\middlewares\ApiMiddleware;
 use app\core\middlewares\AuthenticationMiddleware;
 use app\core\Request;
 use app\core\Response;
@@ -59,14 +58,19 @@ class ApiController extends Controller
     {
         //TODO: validation
         $article = new Article();
-        $article->body = json_encode($request->getJsonData()->article);
+        $data = $request->getJsonData();
+        $article->loadData($data);
         $article->author_id = Application::$app->user->id;
+        $article->body = json_encode($data->article);
 
-
-        if($article->saveCreating()){
-            $response->sendJson(['success' => 1]);
-        } else
-            $response->sendJson(['success' => 0]);
+        if($article->save()){
+            if($article->article_status == 'moderated')
+                Application::$app->session->setFlash('success', 'Статья успешно отправлена на модерацию');
+            Application::$app->response->sendText('success');
+        } else {
+            Application::$app->session->setFlash('fail', 'Ошибка отправки');
+        }
 
     }
+
 }

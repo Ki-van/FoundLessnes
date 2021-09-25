@@ -90,6 +90,6 @@ class Database
 
     public function __destruct()
     {
-        pg_close($this->pgsql);
+        //pg_close($this->pgsql);
     }
 }

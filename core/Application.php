@@ -3,6 +3,7 @@
 namespace app\core;
 
 use app\core\exception\PageNotFoundException;
+use app\models\Visit;
 use Exception;
 
 class Application
@@ -85,5 +86,13 @@ class Application
     {
         $this->user = null;
         $this->session->remove('user');
+    }
+
+    public function __destruct()
+    {
+        if($this->request->isGet()) {
+            $visit = new Visit($this->request);
+            $visit->save();
+        }
     }
 }

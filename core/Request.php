@@ -101,6 +101,10 @@ class Request
         return $this->getHeaders()[$headerName] ?? null;
     }
 
+    public function getFromServer(string $prop)
+    {
+        return filter_input(INPUT_SERVER, $prop, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    }
     private function getHeaders(): array
     {
         $headers = [];

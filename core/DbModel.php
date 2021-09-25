@@ -74,7 +74,8 @@ abstract class DbModel extends Model
         foreach ($attributes as $attribute) {
             $assoc_array[$attribute] = $this->{$attribute};
         }
-       return pg_insert($this->conn(), $this->tableName(), $assoc_array, PGSQL_DML_ESCAPE);
+
+       return pg_insert($this->conn(), $this->tableName(), $assoc_array);
     }
 
     public static function conn()

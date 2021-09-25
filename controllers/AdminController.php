@@ -9,7 +9,8 @@ use app\core\Controller;
 use app\core\middlewares\AuthorizationMiddleware;
 use app\core\Request;
 
-class AdminController extends Controller
+class
+AdminController extends Controller
 {
 
     public function __construct()

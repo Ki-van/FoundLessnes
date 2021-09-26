@@ -4,6 +4,7 @@
 namespace app\models;
 
 
+use app\core\Application;
 use app\core\DbModel;
 
 class Article extends DbModel
@@ -38,6 +39,26 @@ class Article extends DbModel
             array($this->author_id, $this->heading, $this->description, $this->body, $this->article_status));
     }
 
+    public static function findOne(array $where)
+    {
+        $c = Application::$app->db->pgsql;
+        try {
+            pg_query($c, 'Begin;');
+            $isCorrect = pg_query_params($c,
+                /** @lang PostgreSQL */
+                "select get_article($1, 'user_curs');", array($where['article_eval_id']));
+            if ($isCorrect) {
+                $cursor = pg_query($c, 'fetch all from user_curs;');
+                pg_query($c, 'End;');
+                return pg_fetch_object($cursor, null, static::class);
+            }
+            else
+                throw new \Exception("No article with such id or alias");
+        } catch (\Exception) {
+            pg_query(static::conn(), 'rollback;');
+            return null;
+        }
+    }
 
     static public function tableName(): string
     {

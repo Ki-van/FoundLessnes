@@ -15,16 +15,15 @@ abstract class DbModel extends Model
     public static function findOne(array $where)
     {
         $tableName = static::tableName();
-        $attributes = array_keys($where);
-        $sql = implode('AND ', array_map(fn ($attr) => "$attr = :$attr", $attributes));
-        $statement = self::prepare("SELECT * FROM $tableName WHERE $sql");
-        foreach ($where as $key => $value) {
-            $statement->bindValue(":$key", $value);
-        }
-
-        $statement->execute();
-
-        return $statement->fetchObject(static::class);
+        $sql = implode('AND ',
+            array_map(
+                fn ($attr, string $value) =>
+                    "$attr = ".$value,
+                array_keys($where),
+                pg_convert(self::conn(), $tableName, $where)
+            ));
+        $result = pg_query(self::conn(), "SELECT * FROM $tableName WHERE $sql");
+        return pg_fetch_object($result, null, static::class);
     }
 
     /**

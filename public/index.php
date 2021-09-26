@@ -49,7 +49,7 @@ $app->router->get('/profile/sandbox', [ProfileController::class, 'sandbox']);
 
 
 $app->router->get('/articles', [ArticlesController::class, 'articles']);
-$app->router->get('/articles/{url}', [ArticlesController::class, 'articles']);
+$app->router->get('/articles/{article_eval_id}', [ArticlesController::class, 'articles']);
 
 $app->router->get('/admin', [AdminController::class, 'admin']);
 $app->router->post('/admin', [AdminController::class, 'admin']);

@@ -62,4 +62,4 @@ $this->title = 'Создание публикации';
 
 </div>
 
-<script src="/assets/scripts.js"></script>
+<script src="/assets/scripts.bundle.js"></script>

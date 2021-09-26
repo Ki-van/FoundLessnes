@@ -8,8 +8,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack --config build/config.development.js",
-    "prod": "webpack --config build/config.production.js",
+    "dev": "webpack --config webpack.config.js",
     "server": "php -S localhost:8000 -t C:\\xampp_old\\htdocs\\foundlessness\\public"
   },
   "repository": {

@@ -42,11 +42,4 @@ class View
         include_once Application::$ROOT_DIR . "/views/layouts/$layout.php";
         return ob_get_clean();
     }
-
-    public function renderArticle(string $article, array $params = [])
-    {
-        return $this->render("/views/articles/$article.php", $params);
-    }
-
-
 }

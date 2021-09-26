@@ -105,10 +105,15 @@ class Router
                 continue;
             } else {
                 unset($values[0]);
+
             }
 
             $keys = array_map(fn($group) => $group[0], $keys);
-            $this->params = array_combine($keys, $values);
+            $this->params = array_combine($keys,
+                array_map(
+                    fn($val) =>
+                        pg_escape_string(Application::$app->db->pgsql, $val), $values)
+                );
             return $route;
         }
 

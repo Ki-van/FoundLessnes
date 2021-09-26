@@ -26,9 +26,6 @@ class Controller
     public function renderView($view, $params = []){
         return Application::$app->view->renderView($view, $params);
     }
-    public function renderArticle($article, $params = []){
-        return Application::$app->view->renderArticle($article, $params);
-    }
 
     public function registerMiddleware(BaseMiddleware $middleware)
     {

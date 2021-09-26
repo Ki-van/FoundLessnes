@@ -53,7 +53,10 @@ class Application
 
     public static function isAdmin(): bool
     {
-        return self::$app->user->role_name === self::$app->userClass::ROLE_ADMIN;
+        if(self::$app->user != null)
+            return self::$app->user->role_name === self::$app->userClass::ROLE_ADMIN;
+        else
+            return false;
     }
 
     public function run()

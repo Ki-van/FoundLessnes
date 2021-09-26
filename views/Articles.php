@@ -2,12 +2,14 @@
 
 /**
  * @var $this \app\core\View
+ * @var $model \app\models\Article
  */
 
 $this->title = 'Статьи';
 ?>
 
 <div class="block">
+    <?php if($model == null) :?>
     <div class="block">
         <h2 class="art-post-header">
             <img src="/images/cross.png" alt="CROSS" width="22" height="32">
@@ -62,4 +64,7 @@ $this->title = 'Статьи';
             </ul>
         </div>
     </div>
+    <?php else: ?>
+        <div id="editorjs" class="art-post-content"></div>
+    <?php endif; ?>
 </div>

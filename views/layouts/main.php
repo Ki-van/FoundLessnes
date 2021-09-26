@@ -56,14 +56,28 @@ use app\core\View;
                     <div class="menu-dropdown">
                         <a href="../About.html">О ПСИХ</a>
                         <div class="menu-dropdown-content">
-                            <a>О мне</a>
-                            <a>Public keys</a>
                             <a>О группе ПСИХ</a>
                             <a>FAQ</a>
                             <a>Карта сайта</a>
                         </div>
                     </div>
                 </li>
+
+                <?php if (Application::isAdmin()) : ?>
+                    <li><span class="menu-separator"></span></li>
+                    <li class="menu-item">
+                        <div class="menu-dropdown">
+                            <a href="/admin">Admin</a>
+                            <div class="menu-dropdown-content">
+                                <a href="/admin/statistic">Статистика</a>
+                                <a>Статьи</a>
+                                <a>Комментарии</a>
+                                <a>Пользователи</a>
+                            </div>
+                        </div>
+                    </li>
+                <?php endif; ?>
+
                 <?php if (Application::isGuest()) : ?>
                     <li class="menu-item push"><a href="/login">Вход</a></li>
                     <li><span class="menu-separator"></span></li>

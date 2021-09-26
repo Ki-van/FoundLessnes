@@ -54,6 +54,10 @@ $app->router->get('/articles/{url}', [ArticlesController::class, 'articles']);
 $app->router->get('/admin', [AdminController::class, 'admin']);
 $app->router->post('/admin', [AdminController::class, 'admin']);
 
+$app->router->get('/admin/statistic', [AdminController::class, 'statistic']);
+$app->router->get('/admin/articles', [AdminController::class, 'articles']);
+
+
 $app->router->post('/api/uploadFile', [ApiController::class, 'uploadFile']);
 $app->router->post('/api/uploadByUrl', [ApiController::class, 'uploadByUrl']);
 

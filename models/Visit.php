@@ -11,6 +11,32 @@ class Visit extends DbModel
     protected string $user_agent;
     protected string $page;
 
+    /**
+     * @return mixed|string
+     */
+    public function getIp(): mixed
+    {
+        return $this->ip;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getUserAgent(): mixed
+    {
+        return $this->user_agent;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPage(): string
+    {
+        return $this->page;
+    }
+
+
+
     public function __construct(Request $request)
     {
         $this->ip = $request->getFromServer("REMOTE_ADDR");
@@ -27,6 +53,8 @@ class Visit extends DbModel
     {
         return "visits";
     }
+
+
 
     public function attributes(): array
     {

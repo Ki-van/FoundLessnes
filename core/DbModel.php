@@ -78,6 +78,12 @@ abstract class DbModel extends Model
        return pg_insert($this->conn(), $this->tableName(), $assoc_array);
     }
 
+    public static function selectAll()
+    {
+        $all = pg_query(self::conn(), "select * from ".static::tableName());
+        return pg_fetch_all($all, PGSQL_ASSOC);
+    }
+
     public static function conn()
     {
         return Application::$app->db->pgsql;

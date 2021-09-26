@@ -8,6 +8,7 @@ use app\core\Application;
 use app\core\Controller;
 use app\core\middlewares\AuthorizationMiddleware;
 use app\core\Request;
+use app\models\Visit;
 
 class
 AdminController extends Controller
@@ -26,6 +27,13 @@ AdminController extends Controller
 
         return $this->renderView('admin', [
             'model' => null,
+        ]);
+    }
+
+    public function statistic()
+    {
+        return $this->renderView('statistic', [
+            'model' => Visit::selectAll()
         ]);
     }
 }

@@ -13,7 +13,7 @@ class Article extends DbModel
     const MODERATION = 2;
     const CREATING = 3;
 
-    public int $article_eval_id = 0;
+    public string $article_eval_id = "";
     public string $heading = '';
     public string $description = '';
     public string $body = '';
@@ -22,11 +22,6 @@ class Article extends DbModel
     public string $article_status;
     public  $created_at;
     public  $changed_at;
-
-
-    public function __construct()
-    {
-    }
 
     static public function primaryKey(): string
     {
@@ -41,20 +36,22 @@ class Article extends DbModel
 
     public static function findOne(array $where)
     {
-        $c = Application::$app->db->pgsql;
         try {
-            pg_query($c, 'Begin;');
-            $isCorrect = pg_query_params($c,
-                /** @lang PostgreSQL */
-                "select get_article($1, 'user_curs');", array($where['article_eval_id']));
-            if ($isCorrect) {
-                $cursor = pg_query($c, 'fetch all from user_curs;');
-                pg_query($c, 'End;');
-                return pg_fetch_object($cursor, null, static::class);
+            $result = pg_query_params(self::conn(),
+                /** @lang PostgreSQL */"select 
+       heading, description, body, author_id, created_at, updated_at, status_id, alias, article_status
+        from public.article, article_statuses 
+        where  id = article.status_id 
+          and (article_eval_id = $1 or alias = $1) 
+            limit 1",
+                array($where['article_eval_id']));
+
+            if ($result) {
+                return pg_fetch_object($result, null, static::class);
             }
             else
                 throw new \Exception("No article with such id or alias");
-        } catch (\Exception) {
+        } catch (\Exception $e) {
             pg_query(static::conn(), 'rollback;');
             return null;
         }
@@ -77,6 +74,6 @@ class Article extends DbModel
 
     public function labels(): array
     {
-        return ['heading' => 'Заголовок', 'description' => 'Описание'];
+        return ['heading' => 'Заголовок', 'description' => 'Описание', 'alias' => 'Псевдоним', 'article_status' => 'Статус публикации'];
     }
 }

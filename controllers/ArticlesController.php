@@ -26,10 +26,6 @@ class ArticlesController extends Controller
 
             try {
                 $article = Article::findOne($params);
-                if($article){
-                    $article->author_id = User::get_user_by_id($article->author_id);
-                }
-
                 return $this->renderView('articles', [
                     'model' => $article
                 ]);

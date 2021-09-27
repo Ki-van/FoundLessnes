@@ -73,11 +73,6 @@ class User extends UserModel
         }
     }
 
-    public static function get_user_by_api_key(string $apiKey): User|null
-    {
-        return DbModel::exec_procedure_cursor('get_user_by_api_key', [$apiKey], static::class);
-    }
-
     public static function primaryKey(): string
     {
         return 'id';

@@ -4,7 +4,8 @@ module.exports = {
     mode: 'development',
     entry: {
         scripts: './views/assets/index.js',
-        articleView: './views/assets/articleView.js'
+        editor: './views/assets/editor.js',
+        articleAJAX: './views/assets/articleAJAX.js'
     },
     output: {
         path: path.resolve(__dirname, 'public', 'assets'),

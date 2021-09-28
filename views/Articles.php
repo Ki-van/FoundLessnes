@@ -90,7 +90,7 @@ $this->title = 'Статьи';
         ->selected($model->article_status);
     ?>
         <div class="form-group">
-            <button class="btn" id="sendModeration">Сохранить</button>
+            <button class="btn" id="saveBtn">Сохранить</button>
         </div>
     <?php Form::end() ?>
     <?php endif; ?>
@@ -132,7 +132,7 @@ $this->title = 'Статьи';
             let article = <?php echo $model->body?>;
             let readOnly = <?php echo Application::isAdmin() ? 'false' : 'true' ?>
         </script>
-        <script src="/assets/editor.bundle.js"></script>
-        <script src
+        <script src="/assets/articleAdmin.bundle.js"></script>
+
     <?php endif; ?>
 </div>

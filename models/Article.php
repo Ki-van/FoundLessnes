@@ -9,15 +9,12 @@ use app\core\DbModel;
 
 class Article extends DbModel
 {
-    const PUBLISHED = 1;
-    const MODERATION = 2;
-    const CREATING = 3;
-
     public string $article_eval_id = "";
     public string $heading = '';
     public string $description = '';
     public string $body = '';
     public string $author_id = '';
+    public string $alias = '';
     public int $status_id;
     public string $article_status;
     public  $created_at;
@@ -26,6 +23,16 @@ class Article extends DbModel
     static public function primaryKey(): string
     {
         return 'article_eval_id';
+    }
+
+    public function update()
+    {
+        $attributes = $this->attributes();
+        $tableName = self::tableName();
+        $values = implode(',', array_map(fn($attr) => "$attr = ".$this->{$attr}, $attributes));
+        return pg_query(self::connection(), /** @lang PostgreSQL */"update $tableName set $values where 
+                             article_eval_id = ".$this->article_eval_id
+                                ."or alias = ".$this->alias.";");
     }
 
     public function save()
@@ -37,7 +44,7 @@ class Article extends DbModel
     public static function findOne(array $where)
     {
         try {
-            $result = pg_query_params(self::conn(),
+            $result = pg_query_params(self::connection(),
                 /** @lang PostgreSQL */"select 
        heading, description, body, author_id, created_at, updated_at, status_id, alias, article_status
         from public.article, article_statuses 
@@ -52,7 +59,7 @@ class Article extends DbModel
             else
                 throw new \Exception("No article with such id or alias");
         } catch (\Exception $e) {
-            pg_query(static::conn(), 'rollback;');
+            pg_query(static::connection(), 'rollback;');
             return null;
         }
     }
@@ -69,7 +76,7 @@ class Article extends DbModel
 
     public function attributes(): array
     {
-        return ['article_eval_id', 'heading', 'description', 'body', 'author_id', 'status_id'];
+        return ['article_eval_id', 'heading', 'description', 'body', 'author_id', 'status_id', 'alias'];
     }
 
     public function labels(): array

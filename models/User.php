@@ -50,7 +50,7 @@ class User extends UserModel
             else
                 throw new \Exception("Invalid password");
         } catch (\Exception) {
-            pg_query(static::conn(), 'close user_curs; rollback;');
+            pg_query(static::connection(), 'close user_curs; rollback;');
             return null;
         }
     }
@@ -80,7 +80,7 @@ class User extends UserModel
 
     public function save_user(): bool
     {
-        return pg_query_params(static::conn(), 'call add_user($1, $2, $3, $4, $5)',
+        return pg_query_params(static::connection(), 'call add_user($1, $2, $3, $4, $5)',
             array($this->username, $this->email, $this->password, self::ROLE_USER, $this->id));
     }
 

@@ -63,7 +63,7 @@ class ApiController extends Controller
         $article->author_id = Application::$app->user->id;
         $article->body = json_encode($data->article);
 
-        if($article->save()){
+        if($article->validate() && $article->save()){
             if($article->article_status == 'moderated')
                 Application::$app->session->setFlash('success', 'Статья успешно отправлена на модерацию');
             Application::$app->response->sendText('success');

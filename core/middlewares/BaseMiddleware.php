@@ -11,9 +11,18 @@ abstract class BaseMiddleware
     protected array $actions;
     protected $restrictFor;
     protected $callback;
+    protected array $methods = [];
 
     abstract public function __construct($restrictFor, array $actions = [], Callable $callback = null);
-    abstract public function execute();
+    abstract public function execute(array $params);
+
+    /**
+     * @param mixed $methods
+     */
+    public function setMethods(array $methods): void
+    {
+        $this->methods = $methods;
+    }
 
     public function restrict(string $exception)
     {

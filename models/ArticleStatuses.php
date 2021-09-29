@@ -17,6 +17,11 @@ class ArticleStatuses extends DbModel
         return 'id';
     }
 
+    static public function uniques(): array
+    {
+        return ['id'];
+    }
+
     static public function tableName(): string
     {
         return 'article_statuses';

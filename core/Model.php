@@ -17,16 +17,20 @@ abstract class Model
     public const RULE_UNIQUE = 'unique';
     public const RULE_MODEL = 'model';
 
-
     public array $errors = [];
+
+    abstract public function rules(): array;
+
 
     public function loadData($data)
     {
         if (Application::$app->request->isPost()) {
             foreach ($data as $key => $value) {
                 if (property_exists($this, $key))
-                    $this->{$key} = $value;
-
+                    if(is_array($value) && is_string($this->{$key}))
+                        $this->{$key} = json_encode($value);
+                    else
+                        $this->{$key} = $value;
             }
         }
     }
@@ -109,8 +113,6 @@ abstract class Model
 
         return empty($this->errors);
     }
-
-    abstract public function rules(): array;
 
     protected function addErrorForRule(string $attribute, string $rule, array $params = [])
     {

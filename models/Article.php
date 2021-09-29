@@ -6,8 +6,9 @@ namespace app\models;
 
 use app\core\Application;
 use app\core\DbModel;
+use app\core\interfaces\uniqueAttributesI;
 
-class Article extends DbModel
+class Article extends DbModel implements uniqueAttributesI
 {
     public string $article_eval_id = "";
     public string $heading = '';
@@ -24,15 +25,9 @@ class Article extends DbModel
     {
         return 'article_eval_id';
     }
-
-    public function update()
+    public static function uniques(): array
     {
-        $attributes = $this->attributes();
-        $tableName = self::tableName();
-        $values = implode(',', array_map(fn($attr) => "$attr = ".$this->{$attr}, $attributes));
-        return pg_query(self::connection(), /** @lang PostgreSQL */"update $tableName set $values where 
-                             article_eval_id = ".$this->article_eval_id
-                                ."or alias = ".$this->alias.";");
+        return ['article_eval_id', 'alias'];
     }
 
     public function save()

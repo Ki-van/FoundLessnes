@@ -37,6 +37,9 @@ class Router
         $this->routes['post'][$path] = $callback;
     }
 
+    /**
+     * @throws PageNotFoundException
+     */
     public function resolve()
     {
         $path = $this->request->getPath();
@@ -66,7 +69,7 @@ class Router
             $callback[0] = $controller;
 
             foreach ($controller->getMiddlewares() as $middleware) {
-                $middleware->execute();
+                $middleware->execute($this->params);
             }
         }
 

@@ -32,10 +32,6 @@ $app = new Application(dirname(__DIR__), $config);
 
 $app->router->get('/', [SiteController::class, 'home']);
 
-/*
-$app->router->get('/participation', [SiteController::class, 'participation']);
-$app->router->post('/participation', [SiteController::class, 'participation']);*/
-
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
 
@@ -61,7 +57,10 @@ $app->router->get('/admin/articles', [AdminController::class, 'articles']);
 $app->router->post('/api/uploadFile', [ApiController::class, 'uploadFile']);
 $app->router->post('/api/uploadByUrl', [ApiController::class, 'uploadByUrl']);
 
-$app->router->post('/api/article', [ApiController::class, 'article']);
+/**
+ * @var $method - update, create
+ */
+$app->router->post('/api/article/{method}', [ApiController::class, 'article']);
 
 
 

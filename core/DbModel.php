@@ -4,11 +4,13 @@
 namespace app\core;
 
 
+use app\core\interfaces\uniqueAttributesI;
+
 abstract class DbModel extends Model
 {
     abstract static public function primaryKey(): string;
-    abstract static public function tableName(): string;
     abstract public function attributes(): array;
+    abstract static public function tableName(): string;
 
     public static function findOne(array $where)
     {
@@ -60,5 +62,27 @@ abstract class DbModel extends Model
         }
 
         return pg_insert($this->connection(), $this->tableName(), $assoc_array);
+    }
+
+    public function update(): bool|int
+    {
+        $attributes = $this->attributes();
+        $uniques = static::uniques();
+        $tableName = static::tableName();
+        $values = implode(',', array_map(fn($attr) => "$attr = " . $this->{$attr}, $attributes));
+        if(static::class instanceof uniqueAttributesI) {
+            $where = "where " . implode('or ', array_map(fn($uniq) => "$uniq = " . $this->{$uniq}, $uniques));
+        } else
+        {
+            $where = "where ".static::primaryKey()." = ".$this->{static::primaryKey()};
+        }
+
+        $result = pg_query(self::connection(), /** @lang PostgreSQL */ "update $tableName set $values 
+                             " . $where);
+        if ($result)
+            return pg_affected_rows($result);
+        else
+            return false;
+
     }
 }

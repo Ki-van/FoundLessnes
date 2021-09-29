@@ -59,7 +59,7 @@ class Request
 
     public function getJsonData()
     {
-        return json_decode(file_get_contents("php://input"));
+        return json_decode(file_get_contents("php://input"), );
     }
 
     public function getFile(int $i, string $userfile): array|null

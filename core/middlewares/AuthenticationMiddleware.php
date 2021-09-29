@@ -23,7 +23,7 @@ class AuthenticationMiddleware extends BaseMiddleware
         $this->callback = $callback;
     }
 
-    public function execute()
+    public function execute(array $params)
     {
         if ((Application::isGuest() && $this->restrictFor === UserDescriptor::GUEST) ||
             (!Application::isGuest() && $this->restrictFor === UserDescriptor::NOT_GUEST)) {

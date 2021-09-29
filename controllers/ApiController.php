@@ -52,25 +52,40 @@ class ApiController extends Controller
 
     public function uploadByUrl(Request $request, Response $response)
     {
+        //TODO: upload by url
+        $response->setStatusCode(Response::HTTP_NOT_IMPLEMENTED);
     }
 
-    public function article(Request $request, Response $response)
+    public function article(Request $request, Response $response, array $params)
     {
-        //TODO: validation
         $article = new Article();
         $data = $request->getJsonData();
         $article->loadData($data);
-        $article->author_id = Application::$app->user->id;
-        $article->body = json_encode($data->article);
 
-        if($article->validate() && $article->save()){
-            if($article->article_status == 'moderated')
-                Application::$app->session->setFlash('success', 'Статья успешно отправлена на модерацию');
-            Application::$app->response->sendText('success');
+        if($article->validate()){
+
+            switch ($params['method'])
+            {
+                case 'create': {
+                    $article->author_id = Application::$app->user->id;
+                    if($article->save())
+                        $response->setStatusCode(Response::HTTP_OK);
+                    else
+                        $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+                } break;
+                case 'update': {
+                    if ($article->update()) {
+                        $response->setStatusCode(Response::HTTP_OK);
+                    } else
+                        $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+                } break;
+                default:
+                    $response->setStatusCode(Response::HTTP_NOT_FOUND);
+                    return;
+            }
         } else {
-            Application::$app->session->setFlash('fail', 'Ошибка отправки');
+            $response->setStatusCode(Response::HTTP_UNPROCESSABLE_ENTITY);
+            $response->sendJson($article->errors);
         }
-
     }
-
 }

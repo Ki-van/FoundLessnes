@@ -22,10 +22,12 @@ class AuthorizationMiddleware extends BaseMiddleware
         $this->callback = $callback;
     }
 
-    public function execute()
+    public function execute(array $params)
     {
-        if (!Application::isAdmin() && $this->restrictFor === Application::$app->userClass::ROLE_USER) {
-            $this->restrict(ForbiddenException::class);
+        if(empty($this->methods)) {
+            if (!Application::isAdmin() && $this->restrictFor === Application::$app->userClass::ROLE_USER) {
+                $this->restrict(ForbiddenException::class);
+            }
         }
     }
 

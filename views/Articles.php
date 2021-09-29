@@ -11,7 +11,10 @@ use app\core\form\SelectField;
 use app\core\form\TextareaField;
 use app\models\ArticleStatuses;
 
-$this->title = 'Статьи';
+if(empty($model))
+    $this->title = 'Статьи';
+else
+    $this->title = $model->heading;
 ?>
 
 <div class="block">
@@ -130,9 +133,10 @@ $this->title = 'Статьи';
         </div>
         <script>
             let article = <?php echo $model->body?>;
-            let readOnly = <?php echo Application::isAdmin() ? 'false' : 'true' ?>
+            let readOnly = <?php echo Application::isAdmin() ? 'false' : 'true' ?>;
+            let article_eval_id = <?php echo '"'.($model->article_eval_id).'"' ?>;
         </script>
-        <script src="/assets/articleAdmin.bundle.js"></script>
+        <script src="/assets/ArticleAdmin.bundle.js"></script>
 
     <?php endif; ?>
 </div>

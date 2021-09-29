@@ -16,7 +16,7 @@ class Article extends DbModel implements uniqueAttributesI
     public string $body = '';
     public string $author_id = '';
     public string $alias = '';
-    public int $status_id;
+    public int $status_id = 0;
     public string $article_status;
     public  $created_at;
     public  $changed_at;
@@ -41,7 +41,7 @@ class Article extends DbModel implements uniqueAttributesI
         try {
             $result = pg_query_params(self::connection(),
                 /** @lang PostgreSQL */"select 
-       heading, description, body, author_id, created_at, updated_at, status_id, alias, article_status
+      article_eval_id, heading, description, body, author_id, created_at, updated_at, status_id, alias, article_status
         from public.article, article_statuses 
         where  id = article.status_id 
           and (article_eval_id = $1 or alias = $1) 
@@ -71,7 +71,7 @@ class Article extends DbModel implements uniqueAttributesI
 
     public function attributes(): array
     {
-        return ['article_eval_id', 'heading', 'description', 'body', 'author_id', 'status_id', 'alias'];
+        return ['heading', 'description', 'body', 'author_id', 'status_id', 'alias'];
     }
 
     public function labels(): array

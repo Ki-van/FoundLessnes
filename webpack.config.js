@@ -4,7 +4,7 @@ module.exports = {
     mode: 'development',
     entry: {
         scripts: './views/assets/index.js',
-        articleAdmin: './views/assets/articleAdmin.js',
+        ArticleAdmin: './views/assets/ArticleAdmin.js',
     },
     output: {
         path: path.resolve(__dirname, 'public', 'assets'),

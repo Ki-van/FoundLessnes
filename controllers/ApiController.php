@@ -21,8 +21,8 @@ class ApiController extends Controller
         $this->registerMiddleware(
             new AuthenticationMiddleware(
                 UserDescriptor::GUEST,
-                ['uploadFile', 'uploadByUrl', 'save', 'article'],
-                fn () => Application::$app->response->sendJson(['success' => 0,])
+                ['uploadFile', 'uploadByUrl', 'article'],
+                fn () => Application::$app->response->setStatusCode(Response::HTTP_UNAUTHORIZED)
             )
         );
     }
@@ -62,8 +62,7 @@ class ApiController extends Controller
         $data = $request->getJsonData();
         $article->loadData($data);
 
-        if($article->validate()){
-
+        if(true || $article->validate()){
             switch ($params['method'])
             {
                 case 'create': {
@@ -74,7 +73,7 @@ class ApiController extends Controller
                         $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
                 } break;
                 case 'update': {
-                    if ($article->update()) {
+                    if ($article->update() == 1) {
                         $response->setStatusCode(Response::HTTP_OK);
                     } else
                         $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);

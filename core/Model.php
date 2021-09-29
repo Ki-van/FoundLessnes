@@ -27,7 +27,7 @@ abstract class Model
         if (Application::$app->request->isPost()) {
             foreach ($data as $key => $value) {
                 if (property_exists($this, $key))
-                    if(is_array($value) && is_string($this->{$key}))
+                    if(!is_string($value) && is_string($this->{$key}))
                         $this->{$key} = json_encode($value);
                     else
                         $this->{$key} = $value;

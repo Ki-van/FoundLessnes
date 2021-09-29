@@ -9,7 +9,9 @@ use app\core\interfaces\uniqueAttributesI;
 abstract class DbModel extends Model
 {
     abstract static public function primaryKey(): string;
+
     abstract public function attributes(): array;
+
     abstract static public function tableName(): string;
 
     public static function findOne(array $where)
@@ -64,25 +66,25 @@ abstract class DbModel extends Model
         return pg_insert($this->connection(), $this->tableName(), $assoc_array);
     }
 
-    public function update(): bool|int
+    public function update(): bool
     {
         $attributes = $this->attributes();
-        $uniques = static::uniques();
-        $tableName = static::tableName();
-        $values = implode(',', array_map(fn($attr) => "$attr = " . $this->{$attr}, $attributes));
-        if(static::class instanceof uniqueAttributesI) {
-            $where = "where " . implode('or ', array_map(fn($uniq) => "$uniq = " . $this->{$uniq}, $uniques));
-        } else
-        {
-            $where = "where ".static::primaryKey()." = ".$this->{static::primaryKey()};
-        }
-
-        $result = pg_query(self::connection(), /** @lang PostgreSQL */ "update $tableName set $values 
-                             " . $where);
-        if ($result)
+        $sql = pg_update(self::connection(), static::tableName(),
+            array_combine(
+                $attributes,
+                array_map(
+                    fn($attr) => $this->{$attr},
+                    $attributes
+                )
+            ),
+            [static::primaryKey() => $this->{static::primaryKey()}],PGSQL_DML_STRING
+        );
+       $result = pg_query(self::connection(),
+           preg_replace('/("[a-zA-Z\d_]+"=NULL[,]?)/i', '', $sql)
+       );
+        if($result)
             return pg_affected_rows($result);
         else
             return false;
-
     }
 }

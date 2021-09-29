@@ -3,12 +3,12 @@ export function setFlashMessage(message, success = true, timer = 5000) {
     container.setAttribute('class', 'alert ' + success?'alert-success':'alert-fail');
     container.style.opacity = "0%";
     container.innerHTML = "<p>"+message+"</p>";
-    document.querySelector('nav').appendChild(container);
+    document.querySelector('nav').after(container);
     unfade(container);
     setTimeout(async ()=>
     {
-        await fade(container);
-        container.remove();
+        fade(container);
+        setTimeout(()=>container.remove(), 50);
     }, timer);
 }
 
@@ -25,7 +25,7 @@ function fade(element) {
     }, 50);
 }
 
-function unfade(element) {
+async function unfade(element) {
     var op = 0.1;  // initial opacity
     element.style.display = 'block';
     var timer = setInterval(function () {

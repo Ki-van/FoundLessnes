@@ -10,16 +10,36 @@ use app\core\interfaces\uniqueAttributesI;
 
 class Article extends DbModel implements uniqueAttributesI
 {
+    public const STATUS_MODERATED = 2;
+
     public string $article_eval_id = "";
     public string $heading = '';
     public string $description = '';
-    public string $body = '';
     public string $author_id = '';
     public string $alias = '';
-    public int $status_id = 0;
+    public int $status_id = self::STATUS_MODERATED;
     public string $article_status;
+    public array $tag_ids = [];
     public  $created_at;
     public  $changed_at;
+    public string $body =
+        '{
+        "blocks": [
+            {
+                "type": "header",
+                "data": {
+                    "text": "Заголовок",
+                    "level": 1
+                }
+            },
+            {
+                "type": "paragraph",
+                "data": {
+                    "text": "Содержание публикации"
+                }
+            }
+        ],
+    }';
 
     static public function primaryKey(): string
     {
@@ -32,8 +52,9 @@ class Article extends DbModel implements uniqueAttributesI
 
     public function save()
     {
+
         return DbModel::exec_procedure('add_article',
-            array($this->author_id, $this->heading, $this->description, $this->body, $this->article_status));
+            array($this->author_id, $this->heading, $this->description, $this->body, $this->status_id, '{'.implode(', ', $this->tag_ids).'}'));
     }
 
     public static function findOne(array $where)
@@ -76,6 +97,12 @@ class Article extends DbModel implements uniqueAttributesI
 
     public function labels(): array
     {
-        return ['heading' => 'Заголовок', 'description' => 'Описание', 'alias' => 'Псевдоним', 'article_status' => 'Статус публикации'];
+        return [
+            'heading' => 'Заголовок',
+            'description' => 'Описание',
+            'alias' => 'Псевдоним',
+            'article_status' => 'Статус публикации',
+            'tag_ids' => 'Категории'
+        ];
     }
 }

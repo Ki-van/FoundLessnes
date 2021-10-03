@@ -21,7 +21,6 @@ abstract class Model
 
     abstract public function rules(): array;
 
-
     public function loadData($data)
     {
         if (Application::$app->request->isPost()) {
@@ -165,5 +164,31 @@ abstract class Model
     public function getFirstError($attribute)
     {
         return  $this->errors[$attribute][0] ?? false;
+    }
+
+    /**
+     * @param array $attributes
+     * @return string that contains java script with defined in there variables
+     */
+    public function exportToJSScript(array $attributes):string
+    {
+        $script = "<script>";
+        foreach ($attributes as $attribute) {
+            if(property_exists($this, $attribute)) {
+                $script .= "let $attribute = ";
+
+                if(is_string($this->{$attribute}))
+                    $script .= "'".$this->{$attribute}."'";
+                elseif(is_array($this->{$attribute}))
+                    $script .= "'".json_encode($this->{$attribute})."'";
+                else
+                    $script .= $this->{$attribute};
+
+                $script .= '; \n';
+            }
+        }
+
+        $script .= '</script>';
+        return $script;
     }
 }

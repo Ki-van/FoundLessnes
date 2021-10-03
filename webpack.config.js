@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
     mode: 'development',
     entry: {
-        scripts: './views/assets/index.js',
+        Sandbox: './views/assets/Sandbox.js',
         ArticleAdmin: './views/assets/ArticleAdmin.js',
     },
     output: {

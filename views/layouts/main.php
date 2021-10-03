@@ -46,7 +46,7 @@ use app\core\View;
             <ul class="nav">
                 <li class="menu-item menu-item-active"><a href="/">Главная</a></li>
                 <li><span class="menu-separator"></span></li>
-                <li class="menu-item"><a href="articles">Статьи</a></li>
+                <li class="menu-item"><a href="/articles">Статьи</a></li>
                 <li><span class="menu-separator"></span></li>
                 <li class="menu-item"><a href="#">Прогресс</a></li>
                 <li><span class="menu-separator"></span></li>

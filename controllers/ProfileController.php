@@ -24,11 +24,7 @@ class ProfileController extends Controller
     public function sandbox(Request $request)
     {
         $article = new Article();
-        if ($request->isPost()) {
-            if ($article->validate()) {
-                $article->save();
-            }
-        }
+
         return $this->renderView('sandbox', [
             'model' => $article
         ]);

@@ -90,7 +90,7 @@ else
     echo
     (new SelectField($model, 'article_status'))
         ->options(array_combine($ids, $statuses))
-        ->selected($model->article_status);
+        ->selected($model->status_id);
     ?>
         <div class="form-group">
             <button class="btn" id="saveBtn">Сохранить</button>
@@ -132,7 +132,7 @@ else
             <div id="editorjs" class="art-post-content"></div>
         </div>
         <script>
-            let article = <?php echo $model->body?>;
+            let body = <?php echo $model->body?>;
             let readOnly = <?php echo Application::isAdmin() ? 'false' : 'true' ?>;
             let article_eval_id = <?php echo '"'.($model->article_eval_id).'"' ?>;
         </script>

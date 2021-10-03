@@ -6,6 +6,7 @@ namespace app\controllers;
 
 use app\core\Application;
 use app\core\Controller;
+use app\core\DbModelSet;
 use app\core\exception\ForbiddenException;
 use app\core\file\UploadedImage;
 use app\core\middlewares\AuthenticationMiddleware;
@@ -13,6 +14,7 @@ use app\core\Request;
 use app\core\Response;
 use app\core\UserDescriptor;
 use app\models\Article;
+use app\models\Tag;
 
 class ApiController extends Controller
 {
@@ -67,10 +69,16 @@ class ApiController extends Controller
             {
                 case 'create': {
                     $article->author_id = Application::$app->user->id;
-                    if($article->save())
-                        $response->setStatusCode(Response::HTTP_OK);
-                    else
+                    $article->status_id = Article::STATUS_MODERATED;
+
+                    try {
+                        if ($article->save())
+                            $response->setStatusCode(Response::HTTP_OK);
+                        else
+                            $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+                    } catch (\Exception $e) {
                         $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+                    }
                 } break;
                 case 'update': {
                     if ($article->update() == 1) {

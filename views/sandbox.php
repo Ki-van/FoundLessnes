@@ -45,21 +45,35 @@ $this->title = 'Создание публикации';
     <?php
 
     use app\core\form\Form;
+    use app\core\form\SelectField;
     use app\core\form\TextareaField;
+    use app\models\Tag;
+
+    $tags = Tag::selectAll();
+    $ids = array_map(fn($val) => $val['id'], $tags);
+    $names = array_map(fn($val) => $val['tag_name'], $tags);
 
     $form = Form::begin('', 'post'); ?>
     <?php echo $form->field($model, 'heading') ?>
     <?php echo new TextareaField($model, 'description'); ?>
+    <?php echo (new SelectField($model, 'tag_ids'))
+        ->options(array_combine($ids, $names))
+        ->multiple()
+        ->selected($model->tag_ids);
+    ?>
     <div class="form-group">
         <button class="btn" id="sendModeration">Отправить на модерацию</button>
     </div>
     <?php Form::end() ?>
 
 
-
-
     <button class="btn" id="to_editing_stage">Назад к публикации</button>
 
 </div>
 
-<script src="/assets/scripts.bundle.js"></script>
+<script>
+    let body = <?php echo $model->body?>;
+    let readOnly = false;
+    let article_eval_id = <?php echo '"'.($model->article_eval_id).'"' ?>;
+</script>
+<script src="/assets/Sandbox.bundle.js"></script>

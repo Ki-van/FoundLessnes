@@ -19,5 +19,5 @@ export const editor = new EditorJS({
         }
     },
     readOnly: readOnly,
-    data: article,
+    data: body,
 });

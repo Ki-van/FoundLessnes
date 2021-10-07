@@ -20,6 +20,7 @@ class Article extends DbModel implements uniqueAttributesI
     public int $status_id = self::STATUS_MODERATED;
     public string $article_status;
     public array $tag_ids = [];
+    public int $domain_id = 0;
     public  $created_at;
     public  $changed_at;
     public string $body =
@@ -52,9 +53,15 @@ class Article extends DbModel implements uniqueAttributesI
 
     public function save()
     {
-
         return DbModel::exec_procedure('add_article',
-            array($this->author_id, $this->heading, $this->description, $this->body, $this->status_id, '{'.implode(', ', $this->tag_ids).'}'));
+            array($this->author_id,
+                $this->heading,
+                $this->description,
+                $this->body,
+                $this->status_id,
+                '{'.implode(', ', $this->tag_ids).'}',
+                $this->domain_id)
+        );
     }
 
     public static function findOne(array $where)
@@ -102,7 +109,8 @@ class Article extends DbModel implements uniqueAttributesI
             'description' => 'Описание',
             'alias' => 'Псевдоним',
             'article_status' => 'Статус публикации',
-            'tag_ids' => 'Категории'
+            'tag_ids' => 'Теги',
+            'domain_id' => 'Область знания'
         ];
     }
 }

@@ -19,6 +19,10 @@ class View
         $viewContent = $this->renderOnlyView($view, $params);
         $layoutContent = $this->layoutContent($params);
         return str_replace('{{content}}', $viewContent, $layoutContent);
+       /* $validateContent = $this->validateContent($params);
+        $page = str_replace("{{validate}}", $page, $validateContent);
+
+        return $page;*/
     }
 
     public function renderOnlyView(string $view, array $params)
@@ -40,6 +44,20 @@ class View
         $layout = Application::$app->controller->layout;
         ob_start();
         include_once Application::$ROOT_DIR . "/views/layouts/$layout.php";
+        return ob_get_clean();
+    }
+
+    /** Generate validation code for form with models. Assume that page can contain only one form
+     * @param array $params
+     * @return false|string
+     */
+    private function validateContent(array $params)
+    {
+        ob_start();
+        echo '<script>';
+
+
+        echo '</script>';
         return ob_get_clean();
     }
 }

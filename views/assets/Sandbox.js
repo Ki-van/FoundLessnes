@@ -9,6 +9,7 @@ document.querySelector("form").addEventListener("submit", function (ev) {
             heading: document.querySelector("[name='heading']").value,
             description: document.querySelector('textarea[name="description"]').value,
             tag_ids: Array.from(document.querySelector('select[name="tag_ids"]').selectedOptions).map(el => el.value),
+            domain_id: document.querySelector('select[name="domain_id"]').selectedOptions[0].value,
             article: outputData
         }, 'create', () => {
             setFlashMessage('Статья успешно отправлена на модерацию', true, 5000);

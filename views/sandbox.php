@@ -47,15 +47,20 @@ $this->title = 'Создание публикации';
     use app\core\form\Form;
     use app\core\form\SelectField;
     use app\core\form\TextareaField;
+    use app\models\Domain;
     use app\models\Tag;
 
-    $tags = Tag::selectAll();
-    $ids = array_map(fn($val) => $val['id'], $tags);
-    $names = array_map(fn($val) => $val['tag_name'], $tags);
+    $domains = Domain::selectAll();
+    $ids = array_map(fn($val) => $val['id'], $domains);
+    $names = array_map(fn($val) => $val['name'], $domains);
 
     $form = Form::begin('', 'post'); ?>
     <?php echo $form->field($model, 'heading') ?>
     <?php echo new TextareaField($model, 'description'); ?>
+    <?php echo (new SelectField($model, 'domain_id'))
+        ->options(array_combine($ids, $names))
+        ->selected($model->domain_id);
+    ?>
     <?php echo (new SelectField($model, 'tag_ids'))
         ->options(array_combine($ids, $names))
         ->multiple()

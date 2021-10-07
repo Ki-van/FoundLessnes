@@ -118,7 +118,7 @@ use app\core\View;
         </div>
     </div>
     <footer>
-
+        {{validation}}
     </footer>
 </body>
 

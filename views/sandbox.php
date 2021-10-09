@@ -51,18 +51,22 @@ $this->title = 'Создание публикации';
     use app\models\Tag;
 
     $domains = Domain::selectAll();
-    $ids = array_map(fn($val) => $val['id'], $domains);
-    $names = array_map(fn($val) => $val['name'], $domains);
+    $domain_ids = array_map(fn($val) => $val['id'], $domains);
+    $domain_labels = array_map(fn($val) => $val['label'], $domains);
+
+    $tags = Tag::selectAll();
+    $tag_ids = array_map(fn($val) => $val['id'], $tags);
+    $tag_names = array_map(fn($val) => $val['tag_name'], $tags);
 
     $form = Form::begin('', 'post'); ?>
     <?php echo $form->field($model, 'heading') ?>
     <?php echo new TextareaField($model, 'description'); ?>
     <?php echo (new SelectField($model, 'domain_id'))
-        ->options(array_combine($ids, $names))
+        ->options(array_combine($domain_ids, $domain_labels))
         ->selected($model->domain_id);
     ?>
     <?php echo (new SelectField($model, 'tag_ids'))
-        ->options(array_combine($ids, $names))
+        ->options(array_combine($tag_ids, $tag_names))
         ->multiple()
         ->selected($model->tag_ids);
     ?>

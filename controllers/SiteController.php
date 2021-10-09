@@ -6,9 +6,11 @@ use app\core\Application;
 use app\core\Controller;
 use app\core\file\UploadedFile;
 use app\core\Request;
+use app\core\Response;
 use app\core\Router;
 use app\core\Session;
 use app\models\Article;
+use app\models\Domain;
 use app\models\ParticipationForm;
 
 class SiteController extends Controller
@@ -16,6 +18,18 @@ class SiteController extends Controller
     public function home()
     {
         return $this->renderView('home');
+    }
+
+    public function domains(Request $request, Response $response, array $params)
+    {
+        if(empty($params)) {
+            return $this->renderView('domains', [
+                'domains' => Domain::selectAll()
+            ]);
+        } else
+        {
+            echo $params['domain'];
+        }
     }
 
     public function participation(Request $request)

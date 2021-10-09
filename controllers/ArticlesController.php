@@ -11,19 +11,22 @@ use app\core\Response;
 use app\core\UserModel;
 use app\core\View;
 use app\models\Article;
+use app\models\Domain;
 use app\models\User;
 
 class ArticlesController extends Controller
 {
+    /**
+     * @throws PageNotFoundException
+     */
     public function articles(Request $request, Response $response, array $params)
     {
         if (empty($params)) {
-            return $this->renderView('articles');
+            throw new PageNotFoundException;
         } else {
             /**
              * @var $article Article
              */
-
             try {
                 $article = Article::findOne($params);
                 return $this->renderView('articles', [

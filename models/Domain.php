@@ -7,6 +7,7 @@ use app\core\DbModel;
 class Domain extends DbModel
 {
     public string $name;
+    public string $label;
     public string $description;
 
     static public function primaryKey(): string
@@ -16,7 +17,7 @@ class Domain extends DbModel
 
     public function attributes(): array
     {
-        return ['name', 'description'];
+        return ['name', 'description', 'label'];
     }
 
     static public function tableName(): string

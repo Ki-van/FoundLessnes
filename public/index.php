@@ -31,6 +31,9 @@ $config = [
 $app = new Application(dirname(__DIR__), $config);
 
 $app->router->get('/', [SiteController::class, 'home']);
+$app->router->get('/domains', [SiteController::class, 'domains']);
+$app->router->get('/domains/{domain}', [SiteController::class, 'domains']);
+
 
 $app->router->get('/login', [AuthController::class, 'login']);
 $app->router->post('/login', [AuthController::class, 'login']);
@@ -43,8 +46,6 @@ $app->router->get('/logout', [AuthController::class, 'logout']);
 $app->router->get('/profile', [ProfileController::class, 'profile']);
 $app->router->get('/profile/sandbox', [ProfileController::class, 'sandbox']);
 
-
-$app->router->get('/articles', [ArticlesController::class, 'articles']);
 $app->router->get('/articles/{article_eval_id}', [ArticlesController::class, 'articles']);
 
 $app->router->get('/admin', [AdminController::class, 'admin']);
@@ -61,6 +62,7 @@ $app->router->post('/api/uploadByUrl', [ApiController::class, 'uploadByUrl']);
  * @var $method - update, create
  */
 $app->router->post('/api/article/{method}', [ApiController::class, 'article']);
+
 
 
 

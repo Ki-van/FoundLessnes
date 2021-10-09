@@ -46,7 +46,7 @@ use app\core\View;
             <ul class="nav">
                 <li class="menu-item menu-item-active"><a href="/">Главная</a></li>
                 <li><span class="menu-separator"></span></li>
-                <li class="menu-item"><a href="/articles">Статьи</a></li>
+                <li class="menu-item"><a href="/domains">Области знаний</a></li>
                 <li><span class="menu-separator"></span></li>
                 <li class="menu-item"><a href="#">Прогресс</a></li>
                 <li><span class="menu-separator"></span></li>
@@ -89,7 +89,7 @@ use app\core\View;
                             <a href="/profile"><?php echo Application::$app->user->getDisplayName() ?></a>
                             <div class="menu-dropdown-content">
                                 <a href="/profile/sandbox">Написать публикацию</a>
-                                <a href="logout">Выйти</a>
+                                <a href="/logout">Выйти</a>
                             </div>
                         </div>
                     </li>
@@ -118,7 +118,7 @@ use app\core\View;
         </div>
     </div>
     <footer>
-        {{validation}}
+       <!-- {{validation}}-->
     </footer>
 </body>
 

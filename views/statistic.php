@@ -8,12 +8,18 @@ use app\models\Visit;
 $this->title = 'Панель администратора';
 ?>
 
-<div class="art-post-body">
-    <h1>Статистика</h1>
+<div class="block">
+    <h2 class="art-post-header">
+        <img src="/images/cross.png" alt="CROSS" width="22" height="32">
+        <a href="#">
+            Статистика
+        </a>
+    </h2>
     <?php
     foreach ($model as $item)
     {
-        echo "<p>".$item['ip'].'</p><br>';
+
+        echo "<div class='block'><span>".$item['ip'].'</span></div>';
     }
     ?>
 </div>

@@ -55,6 +55,19 @@ abstract class DbModel extends Model
             return false;
     }
 
+    public static function select(array $where)
+    {
+        $tableName = static::tableName();
+        $sql = implode('AND ',
+            array_map(
+                fn($attr, string $value) => "$attr = " . $value,
+                array_keys($where),
+                pg_convert(self::connection(), $tableName, $where)
+            ));
+        $result = pg_query(self::connection(), "SELECT * FROM $tableName WHERE $sql");
+        return pg_fetch_all($result, PGSQL_ASSOC);
+    }
+
     public function save()
     {
         $attributes = $this->attributes();

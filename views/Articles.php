@@ -54,13 +54,12 @@ else
             <span class="date">
                 <?php
                 try {
-                    $date = new DateTime($model->created_at);
-                    echo $date->format("Y-m-d");
+                    echo (new DateTime($model->created_at))->format("Y-m-d");
                 } catch (Exception $e) {
                     echo "Когда то";
                 }
                 ?>
-                </span>
+            </span>
             |
             <a href="#" class="url">
                 <?php

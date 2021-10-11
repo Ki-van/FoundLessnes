@@ -70,7 +70,7 @@ use app\core\View;
                             <a href="/admin">Admin</a>
                             <div class="menu-dropdown-content">
                                 <a href="/admin/statistic">Статистика</a>
-                                <a>Статьи</a>
+                                <a href="/admin/articles">Статьи</a>
                                 <a>Комментарии</a>
                                 <a>Пользователи</a>
                             </div>

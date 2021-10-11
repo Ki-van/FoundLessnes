@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\core\Application;
 use app\core\Controller;
+use app\core\exception\PageNotFoundException;
 use app\core\file\UploadedFile;
 use app\core\Request;
 use app\core\Response;
@@ -28,7 +29,17 @@ class SiteController extends Controller
             ]);
         } else
         {
-            echo $params['domain'];
+            /**
+             * @var $domain Domain
+             */
+            $domain = Domain::findOne(['name'=>$params['domain']]);
+            if(!empty($domain)) {
+                return $this->renderView('domains', [
+                    'domain' => $params['domain'],
+                    'articles' => Article::select(['domain_id' => $domain->id])
+                ]);
+            } else
+                throw new PageNotFoundException();
         }
     }
 

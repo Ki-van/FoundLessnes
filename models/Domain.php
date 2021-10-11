@@ -6,6 +6,7 @@ use app\core\DbModel;
 
 class Domain extends DbModel
 {
+    public int $id;
     public string $name;
     public string $label;
     public string $description;

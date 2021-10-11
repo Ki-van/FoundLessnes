@@ -1,66 +1,21 @@
 <?php
-
 /**
- * @var $this \app\core\View
- * @var $domains array
- * @var $domain string
- * @var $articles array
+ * @var  $articles array
  */
 
-use app\models\Article;
+use app\models\Visit;
 
-if (isset($domains)) {
-    $this->title = 'Области знаний';
-} else
-{
-    $this->title = $domain;
-}
+$this->title = 'Статьи';
 ?>
 
-<?php if (isset($domains)) : ?>
 <div class="block">
     <h2 class="art-post-header">
         <img src="/images/cross.png" alt="CROSS" width="22" height="32">
         <a href="#">
-            Сферы познания
+            Статьи
         </a>
     </h2>
-    <div class="art-post-content">
-        <p>
-            Список областей знаний, по которым сгруппированы все статьи
-        </p>
-    </div>
-    <?php foreach ($domains as $domain): ?>
-        <div class="block">
-            <h2 class="art-post-header">
-                <img src="../images/cross.png" alt="CROSS" width="22" height="32">
-                <a href="/domains/<?php echo $domain['name']?>">
-                    <?php echo $domain['label'] ?>
-                </a>
-            </h2>
-            <div class="art-post-header-meta">
-                <span>Описание</span>
-            </div>
-            <div class="art-post-content">
-                <p>
-                    <?php echo $domain['description'] ?>
-                </p>
-            </div>
-        </div>
-
-    <?php endforeach;?>
-    <?php elseif (!empty($articles)): ?>
-
-    <?php
-    /**
-     * @var $article Article
-     */
-    foreach ($articles as $article):
-        if($article['status_id'] != 1)
-            continue;
-        ?>
-
-
+    <?php foreach ($articles as $article): ?>
         <div class="block">
             <h2 class="art-post-header">
                 <img src="../images/cross.png" alt="CROSS" width="22" height="32">
@@ -69,7 +24,7 @@ if (isset($domains)) {
                 </a>
             </h2>
             <div class="art-post-header-meta">
-                <span>Опубликовано</span>
+                <span>Создано</span>
                 <span class="date">
                 <?php
                 try {
@@ -89,6 +44,16 @@ if (isset($domains)) {
                     echo $author->username
                     ?>
                 </a>
+                |
+                <a>
+                    <?php
+                    /**
+                     * @var $article_status \app\models\ArticleStatuses;
+                     */
+                        $article_status = \app\models\ArticleStatuses::findOne(['id' => $article['status_id']]);
+                        echo $article_status->article_status;
+                    ?>
+                </a>
             </div>
             <div class="art-post-content">
                 <p>
@@ -98,7 +63,5 @@ if (isset($domains)) {
         </div>
     <?php
     endforeach;
-    endif;
     ?>
-
 </div>
